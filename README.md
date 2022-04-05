@@ -1,34 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Attributions
+<a href="https://www.vecteezy.com/free-vector/deforestation">Deforestation Vectors by Vecteezy</a>
+<a href='https://www.freepik.com/vectors/border'>Border vector created by upklyak - www.freepik.com</a>
+<a href='https://www.freepik.com/vectors/background'>Background vector created by upklyak - www.freepik.com</a>
 
-## Getting Started
+Need to download 
+ https://www.freepik.com/free-vector/realistic-cloud-transparent_7062170.htm?query=emissions
 
-First, run the development server:
+https://www.freepik.com/free-vector/tumbleweed-dry-weed-ball-brown-dust-clouds-isolated-transparent_13924283.htm#query=drought&position=21&from_view=keyword
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+https://www.freepik.com/free-vector/dry-land-landscape-transparent-background_12364520.htm?query=dry%20land
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+https://blog.logrocket.com/nextjs-cloud-firestore-full-stack-app-tutorial/
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Use Firestore to Get dataset collection 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+https://github.com/spiermar/d3-flame-graph
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Deploy on Vercel
-
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
