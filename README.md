@@ -10,7 +10,7 @@ https://www.freepik.com/free-vector/tumbleweed-dry-weed-ball-brown-dust-clouds-i
 
 https://www.freepik.com/free-vector/dry-land-landscape-transparent-background_12364520.htm?query=dry%20land
 
-https://blog.logrocket.com/nextjs-cloud-firestore-full-stack-app-tutorial/
+[Nextjs Reference](https://blog.logrocket.com/nextjs-cloud-firestore-full-stack-app-tutorial/)
 
 Use Firestore to Get dataset collection 
 

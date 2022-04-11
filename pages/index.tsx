@@ -1,11 +1,17 @@
+import { useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 import { AddMeal } from '../components/AddMeal'
+import { Header } from '../components/Header'
+import { Display } from '../components/Display'
+import  MainStats  from '../components/Charts'
 
 const Home: NextPage = () => {
+  const [auth, setAuth] = useState(false)
+  const [addingMeal, setAddingMeal] = useState(false)
   return (
     <div className={styles.container}>
       <Head>
@@ -13,23 +19,12 @@ const Home: NextPage = () => {
         <meta name="description" content="A web application for logging dietary impact on green house gases, land use, and water scarcity." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Header auth={auth} setAuth={setAuth}></Header>
       <main className={styles.main}>
-        <AddMeal></AddMeal>
+        <Display auth={auth}></Display>
+          {addingMeal?<AddMeal></AddMeal>: <button onClick={()=>{setAddingMeal(true)}}>Add Meal</button>}
+        <MainStats></MainStats>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   )
 }

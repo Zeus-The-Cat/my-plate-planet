@@ -1,7 +1,9 @@
 import { useState, useEffect,useRef } from "react"
 
 // pass setFoodItem through props to receive
-export const MealSelector = ({setFoodItem,items}:{setFoodItem:any,items:any}) => {
+export const MealSelector = (
+    {setRows,items,index,rows}:
+    {setRows:any,items:any,index:any,rows:any}) => {
     const [selected, setSelected] = useState('')
     const [amount, setAmount] = useState(0)
     const [unit, setUnit] = useState('')
@@ -9,8 +11,9 @@ export const MealSelector = ({setFoodItem,items}:{setFoodItem:any,items:any}) =>
 
     const selectRef  = useRef<HTMLSelectElement>(null);
 
-    // Units
+    // Default Unit and Type
     useEffect(()=>{
+        setSelected('Beef (dairy herd)')
         setUnit('g')
         setType('Protein')
     },[])
@@ -18,16 +21,22 @@ export const MealSelector = ({setFoodItem,items}:{setFoodItem:any,items:any}) =>
     useEffect(()=>{
         // Allows parent component access to amount and unit
         const setParentValue = () => {
-            if(setFoodItem){
+            if(setRows){
                 // Acces selected option then it's parent to access type
-                setFoodItem({amount:amount,unit:unit,type:type,name:selected})
+                let newRows = rows
+                newRows.items[index] = {
+                    amount:amount,
+                    unit:unit,
+                    type:type,
+                    name:selected}
+                setRows({...newRows})
             }
         }
         setParentValue();
-    },[amount,unit,setFoodItem,selected,type])
+    },[amount,unit,setRows,selected,type])
 
     const getUnit = (name:string) => {
-        items?.FoodItems?.forEach((each:any)=>{
+        items?.forEach((each:any)=>{
             if(each.names.includes(name)){
                 setUnit(each.unit)
             }
@@ -36,12 +45,10 @@ export const MealSelector = ({setFoodItem,items}:{setFoodItem:any,items:any}) =>
         setType(selectRef?.current?.selectedOptions[0]?.parentElement?.label)
     }
 
-
     // Options dropdown menu
     const optionGroups = (jsonObj:any) =>{
-        if(jsonObj.FoodItems){
-            return (
-                jsonObj.FoodItems.map((value:any,i:number)=>{
+        if(jsonObj){
+            return jsonObj?.map((value:any,i:number)=>{
                     let options = value.names
                     return(
                         <optgroup label={value.type} key={i+value.type}>
@@ -55,7 +62,6 @@ export const MealSelector = ({setFoodItem,items}:{setFoodItem:any,items:any}) =>
                         </optgroup>
                     )
                 })
-            )
         }
         return(<></>)
     }
@@ -66,11 +72,9 @@ export const MealSelector = ({setFoodItem,items}:{setFoodItem:any,items:any}) =>
         getUnit(event.target.value)
     }
     const handleAmount = (event) => {
-        setAmount(Number(event.target.value))
+        setAmount(event.target.value)
     }
-    const handleSubmit = (event) => {
-        console.log(event.target.value);
-    }
+
   return (
     <form>
         <label htmlFor="food-item">Choose a Food Item&#160;
@@ -79,10 +83,9 @@ export const MealSelector = ({setFoodItem,items}:{setFoodItem:any,items:any}) =>
                 name="food-item" id="food-item">
                 {optionGroups(items)}
             </select>
-            <input type="text" name="food-quantity" 
-                value={amount}
-                onChange={handleAmount}
-                onSubmit={handleSubmit}
+            <input type="text" name="food-quantity" inputMode="numeric"
+                value={amount} step="0.01" pattern="[-+]?[0-9]*[.,]?[0-9]+"
+                onChange={handleAmount} min="0"
             />
             &#160;{unit}
         </label>
