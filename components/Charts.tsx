@@ -1,16 +1,16 @@
 import React, { PureComponent,useEffect } from 'react';
 import { BarChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import axios from 'axios';
-
+import { getDataset } from '../utils/dataset';
 import {ConsumptionByItem} from '../models/ConsumptionStats'
 
-export default class MainStats extends PureComponent {
+
+class MainStats extends PureComponent {
     constructor(props:any){
         super(props)
         const handler = async () =>{ // Calculate meal's contribution
-            const res = await axios.get('/api/dataset');
-            if(res.data.statistics){
-                return res.data.statistics
+            const res = await getDataset(1)
+            if(res){
+                return res
             }else{
                 return null
             }  
@@ -86,3 +86,5 @@ export default class MainStats extends PureComponent {
     );
   }
 }
+
+export default MainStats

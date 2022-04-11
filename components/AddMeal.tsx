@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react'
-// Custom Components
+import { getDataset } from "../utils/dataset"
 import { MealSelector } from './MealSelector'
 import { MealVisuals } from './MealVisuals'
-// libraries
-import axios from 'axios'
 // Models
 import { Meal } from '../models/Meal'
 import MealItem from '../models/MealItem'
 
-export const AddMeal = () => {
+//@ts-ignore
+
+export const AddMeal = (props:any) => {
     const [meal, setMeal] = useState({} as Meal)
     const [foodItems, setFoodItems] = useState({})
     const [rows, setRows] = useState({items:[]}as{items:Array<MealItem>})
-    
+
     useEffect( () => {
         const handler = async () =>{
-            const res = await axios.get('/api/dataset')
-            setFoodItems(res.data.FoodItems.FoodItems) // refactor
+            const data = await getDataset()
+            data ? setFoodItems(data) : null 
         }
         handler();
     },[])
@@ -42,7 +42,7 @@ export const AddMeal = () => {
     }
     const removeRow = (e: any) => {
         setRows({items:rows.items.filter((i,index)=>{
-            return (index+i.name) != e.target.value
+            return index != e.target.value
         })})
     }
     return(
@@ -52,7 +52,7 @@ export const AddMeal = () => {
                 rows.items.map((row,i)=>{
                     return (
                     <span key={i} style={{display:'flex'}}>
-                        <button value={i+row.name} onClick={removeRow}>-</button>
+                        <button value={i} onClick={removeRow}>-</button>
                         <MealSelector 
                             items={foodItems} 
                             rows={rows}

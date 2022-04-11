@@ -1,32 +1,29 @@
 import { useState, useEffect } from "react"
 import { Meal } from "../models/Meal"
-import axios from 'axios'
 import MealItem from "../models/MealItem"
 import { ConsumptionStats } from "../models/ConsumptionStats"
-
+import { getDataset } from "../utils/dataset"
 import styles from '../styles/Home.module.css'
 
-
-
-export const MealVisuals = ({meal}:{meal:Meal}) => {
+export const MealVisuals = (props:any) => {
     const [emissions, setEmissions] = useState(0)
     const [landUse, setLandUse] = useState(0)
     const [waterUse, setWaterUse] = useState(0)
     const [values, setValues] = useState({} as ConsumptionStats)
-    const [nan, setNan] = useState(false)
+    const [nan, _] = useState(false)
 
 
     useEffect( () => {
         const handler = async () =>{ // Calculate meal's contribution
-            const res = await axios.get('/api/dataset');
-            res.data.statistics ? setValues(res.data.statistics) : null;
+            const res = await getDataset(1)
+            res ? setValues(res) : null;
         }
         handler();
     },[])
 
     useEffect(()=>{
         let eSum = 0, lSum = 0, wSum = 0;
-        meal.meals ? meal.meals.forEach((item:MealItem)=>{
+        props.meal.meals ? props.meal.meals.forEach((item:MealItem)=>{
             if(values.classes){
                 // Typescript is bad about bracket identifiers 
                 const index = values.classes.findIndex(obj => {
@@ -50,7 +47,7 @@ export const MealVisuals = ({meal}:{meal:Meal}) => {
         setEmissions(eSum);
         setLandUse(lSum);
         setWaterUse(wSum);
-    },[meal,values])
+    },[props.meal,values])
 
     return(
         <div className={styles.addMealVisuals}>
