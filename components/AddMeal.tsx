@@ -3,13 +3,12 @@ import { useEffect, useState } from 'react'
 import { MealSelector } from './MealSelector'
 import { MealVisuals } from './MealVisuals'
 // libraries
-import Link from 'next/link'
 import axios from 'axios'
 // Models
 import { Meal } from '../models/Meal'
 import MealItem from '../models/MealItem'
 
-export const AddMeal = (props:any) => {
+export const AddMeal = () => {
     const [meal, setMeal] = useState({} as Meal)
     const [foodItems, setFoodItems] = useState({})
     const [rows, setRows] = useState({items:[]}as{items:Array<MealItem>})
@@ -41,7 +40,7 @@ export const AddMeal = (props:any) => {
         newRows.items.push(defaultMeal)
         setRows(newRows)
     }
-    const removeRow = (e) => {
+    const removeRow = (e: any) => {
         setRows({items:rows.items.filter((i,index)=>{
             return (index+i.name) != e.target.value
         })})

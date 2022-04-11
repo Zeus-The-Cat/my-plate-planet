@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import app from '../utils/firebase'
 
 export const Header = ({auth, setAuth}:{auth:any,setAuth:any}) => {
 
@@ -12,10 +11,6 @@ export const Header = ({auth, setAuth}:{auth:any,setAuth:any}) => {
         const logOut = () => {
             // Logs user out using Auth0
             setAuth(false)
-        }
-        const setSrc = () => {
-            // sets image path based on authentication status
-            return auth ? "" : "/leaf.svg"
         }
         return(
             <div className={styles.profileButton}>

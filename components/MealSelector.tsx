@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect,useRef } from "react"
 
 // pass setFoodItem through props to receive
@@ -42,6 +43,7 @@ export const MealSelector = (
             }
         })
         setAmount(0)
+        //@ts-ignore
         setType(selectRef?.current?.selectedOptions[0]?.parentElement?.label)
     }
 
@@ -67,11 +69,11 @@ export const MealSelector = (
     }
 
     // Form Changes
-    const handleChange = (event) => {
+    const handleChange = (event:any) => {
         setSelected(event.target.value)
         getUnit(event.target.value)
     }
-    const handleAmount = (event) => {
+    const handleAmount = (event:any) => {
         setAmount(event.target.value)
     }
 

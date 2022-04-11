@@ -38,10 +38,10 @@ export const MealVisuals = ({meal}:{meal:Meal}) => {
                     });
                     if(ii >= 0){
                         const itemStat = values.classes[index].items[ii]
-                        eSum += parseFloat(itemStat.meanEmissions) * item.amount
-                        lSum += parseFloat(itemStat.meanLandUse) * item.amount
-                        if(parseFloat(itemStat.meanWater)){ 
-                            wSum += parseFloat(itemStat.meanWater) * item.amount;
+                        eSum += parseFloat(String(itemStat.meanEmissions)) * item.amount
+                        lSum += parseFloat(String(itemStat.meanLandUse)) * item.amount
+                        if(parseFloat(String(itemStat.meanWater))){ 
+                            wSum += parseFloat(String(itemStat.meanWater)) * item.amount;
                         }
                     }
                 } 

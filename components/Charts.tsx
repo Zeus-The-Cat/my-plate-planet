@@ -24,7 +24,7 @@ export default class MainStats extends PureComponent {
     }
     transformData(res:any){
         // Join Arrays of data at res.classes[].items
-        const stageOne =  res.classes.reduce((prev,current)=>{
+        const stageOne =  res.classes.reduce((prev:any,current:any)=>{
             return prev.concat(current.items)
         },[])
         stageOne.forEach((item:ConsumptionByItem)=>{
@@ -35,15 +35,19 @@ export default class MainStats extends PureComponent {
        return stageOne
     }
     componentDidMount(){
+        //@ts-ignore
         this.state.promise.then((result:any)=>{
             this.setState({data:this.transformData(result)})
         })
     }
     renderLine(){
+        //@ts-ignore
         if(this.state.active == "meanEmissions"){
             return <Bar type="monotone" dataKey="meanEmissions" fill="#8884d8" strokeWidth={2} />
+        //@ts-ignore
         }else if(this.state.active == "meanLandUse"){
             return <Bar type="monotone" dataKey="meanLandUse" fill="#d88484" strokeWidth={2} />
+        //@ts-ignore
         }else if(this.state.active == "meanWater"){
             return <Bar type="monotone" dataKey="meanWater" fill="#3f23b1" strokeWidth={2} />
         }
@@ -67,6 +71,7 @@ export default class MainStats extends PureComponent {
              </form>
             <div style={{height:'20vw',width:'80vw'}}>
                 <ResponsiveContainer width="100%" height="100%">
+                    {/* @ts-ignore */}
                     <BarChart width={300} height={100} data={this.state.data}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" scale="band" />

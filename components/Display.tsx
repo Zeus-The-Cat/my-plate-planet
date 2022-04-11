@@ -8,11 +8,6 @@ export const Display = ({auth}:{auth:boolean}) => {
         min:"",
         max:""
     })
-    const [end, setEnd] = useState({
-        value:"",
-        min:"",
-        max:""
-    })
 
     useEffect(()=>{
         // Initialize start and end states
@@ -20,10 +15,9 @@ export const Display = ({auth}:{auth:boolean}) => {
         const todayString = fullDate.toISOString();
         const defaults = {value:todayString,min:"1970-01-01",max:todayString}
         setStart(defaults)
-        setEnd({...defaults})
-    },[setEnd, setStart])
+    },[setStart])
 
-    const handleStart = (e) => {
+    const handleStart = (e:any) => {
         setStart({...start, value:e.target.value})
         console.log(start)
     }
