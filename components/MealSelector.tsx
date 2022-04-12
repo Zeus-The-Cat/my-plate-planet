@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect,useRef } from "react"
+import { MealItem } from "../models/Meal"
 
 // pass setFoodItem through props to receive
 export const MealSelector = (
-    {setRows,items,index,rows}:
-    {setRows:any,items:any,index:any,rows:any}) => {
+    {setRows,items,ukey,rows}:
+    {setRows:any,items:any,ukey:string,rows:Map<string,MealItem>}) => {
     const [selected, setSelected] = useState('')
     const [amount, setAmount] = useState(0)
     const [unit, setUnit] = useState('')
@@ -24,13 +25,16 @@ export const MealSelector = (
         const setParentValue = () => {
             if(setRows){
                 // Acces selected option then it's parent to access type
-                let newRows = rows
-                newRows.items[index] = {
+                let newRows = new Map()
+                rows.forEach((value,k)=>{
+                    newRows.set(k,value);
+                })
+                newRows.set(ukey,{
                     amount:amount,
                     unit:unit,
                     type:type,
-                    name:selected}
-                setRows({...newRows})
+                    name:selected})
+                setRows(newRows)
             }
         }
         setParentValue();

@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
+import {v4 as uuidv4} from 'uuid'
+
 import { getDataset } from "../utils/dataset"
 import { MealSelector } from './MealSelector'
 import { MealVisuals } from './MealVisuals'
+
 // Models
 import { Meal } from '../models/Meal'
 import MealItem from '../models/MealItem'
 
 //@ts-ignore
-
 export const AddMeal = (props:any) => {
     const [meal, setMeal] = useState({} as Meal)
     const [foodItems, setFoodItems] = useState({})
-    const [rows, setRows] = useState({items:[]}as{items:Array<MealItem>})
+    // const [rows, setRows] = useState({items:[]}as{items:Array<MealItem>})
+    const [rows,setRows] = useState(new Map())
 
     useEffect( () => {
         const handler = async () =>{
@@ -23,8 +26,7 @@ export const AddMeal = (props:any) => {
 
     useEffect( ()=> {
         const composeMeal = () => {
-            setMeal({
-                meals:[...rows.items]})
+            setMeal({meals:rows})
         }
         composeMeal();
     },[rows])
@@ -36,29 +38,38 @@ export const AddMeal = (props:any) => {
             type:'Protein',
             name:'Beef'
         } as MealItem;
-        let newRows = {items:[...rows.items]}
-        newRows.items.push(defaultMeal)
+        let newRows = new Map()
+        rows.forEach((value, key)=> {
+            newRows.set(key,value)
+        })
+        // Generate a key using UUID'
+        newRows.set(uuidv4(),defaultMeal)
         setRows(newRows)
     }
     const removeRow = (e: any) => {
-        setRows({items:rows.items.filter((i,index)=>{
-            return index != e.target.value
-        })})
+        if(rows.delete(e.target.value)){
+            let newRows = new Map()
+            rows.forEach((value,key)=>{
+                newRows.set(key,value)
+            })
+            setRows(newRows)
+        }else{console.error("Couldn't find Key at Add-Meals")}
     }
     return(
         <div>
             <MealVisuals meal={meal}></MealVisuals>
             {
-                rows.items.map((row,i)=>{
+                [...rows.keys()].map((key,_)=>{
+                    console.count('meal-rendered')
+                    console.log(key)
                     return (
-                    <span key={i} style={{display:'flex'}}>
-                        <button value={i} onClick={removeRow}>-</button>
+                    <span key={key} style={{display:'flex'}}>
+                        <button value={key} onClick={removeRow}>-</button>
                         <MealSelector 
                             items={foodItems} 
                             rows={rows}
                             setRows={setRows} 
-                            index={i}
-                            key={i}></MealSelector>
+                            ukey={key}></MealSelector>
                     </span>
                 )})
             }

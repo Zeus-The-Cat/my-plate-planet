@@ -5,7 +5,7 @@ export interface MealItem{
     unit:string
 }
 export interface Meal{
-    meals:MealItem[],
+    meals:Map<string,MealItem>,
     createdOn?: Date,
     updatedOn?: Date
 }
