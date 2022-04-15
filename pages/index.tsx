@@ -8,6 +8,7 @@ import { AddMeal } from '../components/AddMeal'
 import { Header } from '../components/Header'
 import { Display } from '../components/Display'
 import  MainStats  from '../components/Charts'
+import MealChart from '../components/MealCharts'
 
 const Home: NextPage = () => {
   const [auth, setAuth] = useState(false)
@@ -22,8 +23,9 @@ const Home: NextPage = () => {
       <Header auth={auth} setAuth={setAuth}></Header>
       <main className={styles.main}>
         <Display auth={auth}></Display>
-          {addingMeal?<AddMeal></AddMeal>: <button onClick={()=>{setAddingMeal(true)}}>Add Meal</button>}
+          {addingMeal?<AddMeal setAddingMeal={setAddingMeal}></AddMeal>: <button onClick={()=>{setAddingMeal(true)}}>Add Meal</button>}
         <MainStats></MainStats>
+        <MealChart></MealChart>
       </main>
     </div>
   )

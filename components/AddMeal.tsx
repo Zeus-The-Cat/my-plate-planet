@@ -9,6 +9,8 @@ import { MealVisuals } from './MealVisuals'
 import { Meal } from '../models/Meal'
 import MealItem from '../models/MealItem'
 
+import styles from '../styles/Home.module.css'
+
 //@ts-ignore
 export const AddMeal = (props:any) => {
     const [meal, setMeal] = useState({} as Meal)
@@ -38,26 +40,28 @@ export const AddMeal = (props:any) => {
             type:'Protein',
             name:'Beef'
         } as MealItem;
-        let newRows = new Map()
-        rows.forEach((value, key)=> {
-            newRows.set(key,value)
-        })
         // Generate a key using UUID'
-        newRows.set(uuidv4(),defaultMeal)
-        setRows(newRows)
+        setRows(new Map(rows.set(uuidv4(),defaultMeal)))
     }
     const removeRow = (e: any) => {
         if(rows.delete(e.target.value)){
-            let newRows = new Map()
-            rows.forEach((value,key)=>{
-                newRows.set(key,value)
-            })
-            setRows(newRows)
+            setRows(new Map(rows))
         }else{console.error("Couldn't find Key at Add-Meals")}
     }
+
+    const submitMeal= (e:any) => {
+        console.count('submit-meal')
+    }
+    const cancelMeal = (e:any) => {
+        props.setAddingMeal(false)
+    }
     return(
-        <div>
-            <MealVisuals meal={meal}></MealVisuals>
+        <div className={styles.addMealCard}>
+            <div style={{display:'flex',justifyContent:'spaceBetween',alignItems:'center'}}>
+                <button onClick={cancelMeal}>Cancel</button>
+                <MealVisuals meal={meal}></MealVisuals>
+                <button onClick={submitMeal}>Submit</button>
+            </div>
             {
                 [...rows.keys()].map((key,_)=>{
                     console.count('meal-rendered')

@@ -1,14 +1,14 @@
 import React, { PureComponent,useEffect } from 'react';
 import { BarChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { getDataset } from '../utils/dataset';
-import {ConsumptionByItem} from '../models/ConsumptionStats'
+import {ConsumptionByItem, ConsumptionByClass, ConsumptionStats} from '../models/ConsumptionStats'
 
 
 class MainStats extends PureComponent {
     constructor(props:any){
         super(props)
         const handler = async () =>{ // Calculate meal's contribution
-            const res = await getDataset(1)
+            const res:ConsumptionStats = await getDataset(1)
             if(res){
                 return res
             }else{
@@ -20,11 +20,10 @@ class MainStats extends PureComponent {
             data:{},
             active:"meanEmissions"
         }
-        
     }
-    transformData(res:any){
+    transformData(res:ConsumptionStats){
         // Join Arrays of data at res.classes[].items
-        const stageOne =  res.classes.reduce((prev:any,current:any)=>{
+        const stageOne =  res.classes.reduce((prev:Array<ConsumptionByItem>,current:ConsumptionByClass)=>{
             return prev.concat(current.items)
         },[])
         stageOne.forEach((item:ConsumptionByItem)=>{
@@ -36,7 +35,7 @@ class MainStats extends PureComponent {
     }
     componentDidMount(){
         //@ts-ignore
-        this.state.promise.then((result:any)=>{
+        this.state.promise.then((result:ConsumptionStats)=>{
             this.setState({data:this.transformData(result)})
         })
     }

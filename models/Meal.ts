@@ -1,3 +1,11 @@
+export interface MealCost{
+    name:string,
+    type:string,
+    emissions:number,
+    landUse: number,
+    waterUse: number,
+}
+
 export interface MealItem{
     name:string,
     type:string,
