@@ -6,8 +6,7 @@ import { MealSelector } from './MealSelector'
 import { MealVisuals } from './MealVisuals'
 
 // Models
-import { Meal } from '../models/Meal'
-import MealItem from '../models/MealItem'
+import { Meal, MealItem } from '../models/Meal'
 
 import styles from '../styles/Home.module.css'
 
@@ -15,7 +14,6 @@ import styles from '../styles/Home.module.css'
 export const AddMeal = (props:any) => {
     const [meal, setMeal] = useState({} as Meal)
     const [foodItems, setFoodItems] = useState({})
-    // const [rows, setRows] = useState({items:[]}as{items:Array<MealItem>})
     const [rows,setRows] = useState(new Map())
 
     useEffect( () => {
@@ -29,8 +27,10 @@ export const AddMeal = (props:any) => {
     useEffect( ()=> {
         const composeMeal = () => {
             setMeal({meals:rows})
+            props.setParentMeal({meals:rows})
         }
         composeMeal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[rows])
 
     const addRow = () => {
@@ -64,8 +64,6 @@ export const AddMeal = (props:any) => {
             </div>
             {
                 [...rows.keys()].map((key,_)=>{
-                    console.count('meal-rendered')
-                    console.log(key)
                     return (
                     <span key={key} style={{display:'flex'}}>
                         <button value={key} onClick={removeRow}>-</button>

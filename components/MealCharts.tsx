@@ -3,8 +3,11 @@ import { BarChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 import { getDataset } from '../utils/dataset';
 import {ConsumptionByItem, ConsumptionByClass, ConsumptionStats} from '../models/ConsumptionStats'
 import { Meal, MealItem,MealCost } from '../models/Meal';
+
 // Need to use class style for ReCharts
-class MealChart extends PureComponent {
+class MealChart extends PureComponent<
+    {userMeal:Meal},
+    {promise:any,data:any,active:string,results:any}> {
     constructor(props:any){
         super(props)
         const handler = async () =>{ // Calculate meal's contribution
@@ -18,7 +21,8 @@ class MealChart extends PureComponent {
         this.state = {
             promise:handler(),
             data:{},
-            active:"emissions"
+            active:"emissions",
+            results:{}
         }
     }
 
@@ -42,7 +46,7 @@ class MealChart extends PureComponent {
         ]),
     }
 
-    mealEmissions(res:ConsumptionStats){
+    mealData(res:ConsumptionStats){
         // for each in testMeal amount * meanEmission... 
         const cost = (item_:MealItem) => {
             const type = res.classes.find((el:ConsumptionByClass)=>{
@@ -58,21 +62,30 @@ class MealChart extends PureComponent {
         }
 
         let items:Array<MealCost> = []
-        for (let item of this.testMeal.meals.values()){
-            items.push({
-                name:item.name,
-                type:item.type,
-                ...cost(item)
-            })
+        if(this?.props?.userMeal?.meals){
+            for (let item of this.props.userMeal.meals.values()){
+                items.push({
+                    name:item.name,
+                    type:item.type,
+                    ...cost(item)
+                })
+            }
         }
-        console.log(items)
        return items
     }
     componentDidMount(){
         //@ts-ignore ReadOnly<> ts issue
         this.state.promise.then((result:ConsumptionStats)=>{
-            this.setState({data:this.mealEmissions(result)})
+            this.setState({
+                data:this.mealData(result),
+                results:result})
         })
+    }
+    componentDidUpdate(prevProps:any){
+        if(prevProps.userMeal != this.props.userMeal){
+            this.setState({
+                data:this.mealData(this.state.results)})
+        }
     }
     renderLine(){
         //@ts-ignore
@@ -102,7 +115,7 @@ class MealChart extends PureComponent {
                     </select>
                 </label>
              </form>
-            <div style={{height:'20vw',width:'80vw'}}>
+            <div style={{height:'20vw',width:'30vw'}}>
                 <ResponsiveContainer width="100%" height="100%">
                     {/* @ts-ignore */}
                     <BarChart width={300} height={100} data={this.state.data}>
@@ -115,6 +128,7 @@ class MealChart extends PureComponent {
                     </BarChart>
                 </ResponsiveContainer>
             </div>
+            
         </>
     );
   }
