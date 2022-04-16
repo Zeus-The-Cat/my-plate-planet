@@ -56,9 +56,9 @@ class MealChart extends PureComponent<
                 return el2.name == item_.name
             })
             return {
-                emissions:item_.amount * Number(targetItem?.meanEmissions),
-                landUse:item_.amount * Number(targetItem?.meanLandUse),
-                waterUse:item_.amount * Number(targetItem?.meanWater)}
+                emissions:Math.round(item_.amount * Number(targetItem?.meanEmissions)),
+                landUse:Math.round(item_.amount * Number(targetItem?.meanLandUse)),
+                waterUse:Math.round(item_.amount * Number(targetItem?.meanWater))}
         }
 
         let items:Array<MealCost> = []

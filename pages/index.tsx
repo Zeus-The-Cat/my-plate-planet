@@ -23,7 +23,7 @@ const Home: NextPage = () => {
       </Head>
       <Header auth={auth} setAuth={setAuth}></Header>
       <main className={styles.main}>
-        <Display auth={auth}></Display>
+        <Display auth={auth} meal={parentMeal}></Display>
           {addingMeal?<AddMeal setAddingMeal={setAddingMeal} setParentMeal={setParentMeal}></AddMeal>: <button onClick={()=>{setAddingMeal(true)}}>Add Meal</button>}
         <MealChart userMeal={parentMeal}></MealChart>
       </main>
