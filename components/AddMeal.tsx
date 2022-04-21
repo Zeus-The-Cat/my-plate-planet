@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import {v4 as uuidv4} from 'uuid'
+import { doc, updateDoc, Timestamp, arrayUnion,collection } from 'firebase/firestore'
+import { getAuth, User } from 'firebase/auth'
+import { db, app } from '../utils/firebase'
 
 import { getDataset } from "../utils/dataset"
 import { MealSelector } from './MealSelector'
@@ -9,12 +12,12 @@ import { MealVisuals } from './MealVisuals'
 import { Meal, MealItem } from '../models/Meal'
 
 import styles from '../styles/Home.module.css'
-
 //@ts-ignore
 export const AddMeal = (props:any) => {
     const [meal, setMeal] = useState({} as Meal)
     const [foodItems, setFoodItems] = useState({})
     const [rows,setRows] = useState(new Map())
+    const auth = getAuth(app)
 
     useEffect( () => {
         const handler = async () =>{
@@ -26,8 +29,8 @@ export const AddMeal = (props:any) => {
 
     useEffect( ()=> {
         const composeMeal = () => {
-            setMeal({meals:rows})
-            props.setParentMeal({meals:rows})
+            setMeal({items:rows})
+            props.setParentMeal({items:rows})
         }
         composeMeal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,7 +53,26 @@ export const AddMeal = (props:any) => {
     }
 
     const submitMeal= (e:any) => {
-        console.count('submit-meal')
+        // append /users/{auth.uid}/meals 
+        const updateMeal = async () => {
+            let items:Array<Array<string|MealItem>> = []
+            for(const item of rows.entries()){
+                const temp = item[0]
+                //@ts-ignore
+                items.push({uid:item[0],...item[1]})
+            }
+            const user:User|null = auth.currentUser;
+            const userRef = user?.uid ? doc(db,'users',user.uid) : null
+            userRef && await updateDoc(userRef,{
+                meals:arrayUnion({
+                    createdOn:Timestamp.fromDate(new Date()),
+                    items:items
+                })
+            }).then(()=>{
+                props.setAddingMeal(false)
+            })
+        }
+        updateMeal();
     }
     const cancelMeal = (e:any) => {
         props.setAddingMeal(false)

@@ -1,23 +1,34 @@
+import { Auth, getAuth, signOut } from 'firebase/auth'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Login from './Login'
+import { UserContext } from "../utils/authContext"
+import { useContext } from 'react'
 
-export const Header = ({auth, setAuth}:{auth:any,setAuth:any}) => {
+export const Header = ({setModal,setModalContent}:{setModal:any,setModalContent:any}) => {
+    const userContext:Auth|null = useContext(UserContext)
 
     const logIn = () => {
-        setAuth(true)
+        setModalContent(<Login setModal={setModal} setModalContent={setModalContent}></Login>)
+        setModal(true)
     }
     const UserProfile = () => {
-        // Uses firebase App to access user's profile image 
+        // Check Auth state to allow user to login
         const logOut = () => {
             // Logs user out using Auth0
-            setAuth(false)
+            userContext.signOut().then(() => {
+                // Sign-out successful.
+            }).catch((_error) => {
+                // An error happened.
+            });
         }
         return(
             <div className={styles.profileButton}>
                 <Image src="/leaf.svg" alt="Profile Picture"
                     width="50" height="50"
                 ></Image>
-                {auth?<button onClick={logOut}>Log Out</button>:<button onClick={logIn}>Login</button>}
+                {userContext?.currentUser?<button onClick={logOut}>Log Out</button>:<button onClick={logIn}>Login</button>}
+                {userContext?.currentUser?.displayName}
             </div>
         )
     }

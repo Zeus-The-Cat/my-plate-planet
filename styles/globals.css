@@ -1,10 +1,21 @@
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+  font-size: 16px;
+  --green: #52796F;
+  --green-light: #84A98C;
+  --green-dark: #354F52;
+  --green-lightest: #CAD2C5;
+  --green-darkest: #2F3E46;
+  --warning: #a01a58;
+  --gray:#7D8597;
+  --gray-light: #979DAC;
+  --gray-dark: #5C677D;
+  }
 
 a {
   color: inherit;

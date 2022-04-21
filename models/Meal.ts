@@ -13,7 +13,7 @@ export interface MealItem{
     unit:string
 }
 export interface Meal{
-    meals:Map<string,MealItem>,
+    items:Map<string,MealItem>,
     createdOn?: Date,
     updatedOn?: Date
 }
