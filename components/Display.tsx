@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react'
 import { Meal } from '../models/Meal'
 import styles from '../styles/Home.module.css'
+import Image from 'next/image'
 
 // SVG based visualization of consumption use 
 export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
     const [start, setStart] = useState({
         value:"",
-        min:"",
-        max:""
+        minDate:"",
+        maxDate:""
         })
     
     useEffect(()=>{
         // Initialize start and end states
         const fullDate = new Date();
         const todayString = fullDate.toISOString();
-        const defaults = {value:todayString,min:"1970-01-01",max:todayString}
+        const defaults = {value:todayString,minDate:"1970-01-01",maxDate:todayString}
         setStart(defaults)
     },[setStart])
 
@@ -27,8 +28,8 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
         <form>
             <label htmlFor="date-range">
                 <input type="datetime-local" id="Display-Date"
-                    name="start" value={start.value} max={start.max}
-                    min={start.min} onChange={handleStart}/>
+                    name="start" value={start.value} max={start.maxDate}
+                    min={start.minDate} onChange={handleStart}/>
             </label>
         </form>)
     }
@@ -36,12 +37,13 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
     useEffect(()=>{
         console.log(meal)
     },[meal])
+
     const landUseBreakpoints =     [924,2343,3762,5181,6600]
     const waterUseBreakpoints =    [968,1532,2097,2662,3227]
     const emissionUseBreakpoints = [3.11,4.92,6.73,8.55,10.36]
+    
     const TemporalUse = () => {
         // Users consumption cost over time
-        
         return(
             <>
                 Yearly Avg Use View<br />
@@ -68,7 +70,8 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
     return(
         <div className={styles.display}>
             <div className={styles.visualization}>
-                {auth ? <TemporalUse></TemporalUse> : <MealUse></MealUse>}
+                <TemporalUse></TemporalUse>
+                {/* {auth ? <TemporalUse></TemporalUse> : <MealUse></MealUse>} */}
             </div>
             <div className={styles.visualizationTitle}>
                 {auth?"Average Consumption Impact":"Individual Meal Impact"}

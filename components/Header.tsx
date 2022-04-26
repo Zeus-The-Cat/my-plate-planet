@@ -16,7 +16,7 @@ export const Header = ({setModal,setModalContent}:{setModal:any,setModalContent:
         // Check Auth state to allow user to login
         const logOut = () => {
             // Logs user out using Auth0
-            userContext.signOut().then(() => {
+            userContext?.signOut().then(() => {
                 // Sign-out successful.
             }).catch((_error) => {
                 // An error happened.

@@ -73,6 +73,8 @@ class MealChart extends PureComponent<
         }
        return items
     }
+
+    // component initialized
     componentDidMount(){
         //@ts-ignore ReadOnly<> ts issue
         this.state.promise.then((result:ConsumptionStats)=>{
@@ -81,12 +83,14 @@ class MealChart extends PureComponent<
                 results:result})
         })
     }
+    // on each rerender check if userMeal changed
     componentDidUpdate(prevProps:any){
         if(prevProps.userMeal != this.props.userMeal){
             this.setState({
                 data:this.mealData(this.state.results)})
         }
     }
+    
     renderLine(){
         //@ts-ignore
         if(this.state.active == "emissions"){

@@ -9,6 +9,16 @@
   align-items: center;
 }
 
+.flexColumn{
+  display:flex;
+  flex-direction:column;
+}
+.flexCentered{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
 .modal{
   position: fixed;
   display: block;
@@ -63,7 +73,6 @@
   display:flex;
   flex-direction:column;
 }
-
 .profileButton{
   display:flex;
   flex-direction: column;
@@ -80,6 +89,32 @@
   cursor:pointer;
   color:grey;
 }
+
+
+
+.HomeCard{
+  width:82vw;
+  height:600px;
+  color:white;
+  font-size:clamp(18px,4vw,21px);
+}
+.HomeCardHeader{
+  display:flex;
+  align-items:center;
+  min-height:80px;
+  background:var(--green-darkest);
+  border-top-left-radius: var(--br);
+  border-top-right-radius: var(--br);
+  border-bottom:4px solid var(--green);
+}
+.HomeCardHeader > div:first-child{
+  margin:20px;
+}
+
+.homeCardAddMeal{
+  margin:auto;
+}
+/*//////////////////////////////////*/
 
 .modalContainer{
   background:var(--green-dark);
@@ -125,6 +160,8 @@
   font-size:1em;
 }
 
+
+
 .createAccount{
   font-size:1.1em;
 }
@@ -132,6 +169,8 @@
   cursor:pointer;
   color:var(--green-lightest);
 }
+
+
 
 .mealHistoryContainer{
   display:flex;
@@ -148,6 +187,9 @@
   text-align:center;
   margin:5px;
 }
+
+
+
 .display{
   display:flex;
   flex-direction:column;
@@ -158,13 +200,15 @@
   background:lightblue;
   width:82vw;
   border: 2px solid gray;
-  border-radius:10px;
+  border-radius:var(--br);
   height:200px;
 }
 .visualizationTitle{
   font-size: clamp(18px,4vw,21px);
   padding:2px;
 }
+
+
 
 .addMealCard{
   border: 2px solid blue;
@@ -206,6 +250,9 @@
 .addUserByEmail > button{
   margin: 10px;
 }
+
+
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;

@@ -30,13 +30,15 @@ export const MealHistory = () => {
         <div className={styles.mealHistoryContainer}>
             <h3>Meal History</h3>
 
-            {history.meals && history.meals.map((each:any)=>{
+            {history.meals !== undefined ? history.meals.map((each:any)=>{
                 const date = new Date(each?.createdOn?.seconds*1000)
+                // Combine Date object into styled string
                 const fullDate = date.getMonth()+
                                 "/"+(date.getDate()+1)+
                                 "/"+date.getFullYear()+
                                 " "+date.getHours()+
                                 ":"+date.getMinutes()
+            
                 return(<div key={date.toString()}>
                         <div><b>{fullDate}</b></div>
                         {each.items.map((meal:any,index:any)=>{
@@ -47,8 +49,7 @@ export const MealHistory = () => {
                             )
                         })}
                 </div>)
-            })}
-            
+            }): 'Loading...'}
         </div>
     )
 }

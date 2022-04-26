@@ -12,7 +12,7 @@ import { Meal } from '../models/Meal'
 import Login from '../components/Login'
 import { Modal } from '../components/Modal'
 import { MealHistory } from '../components/MealHistory'
-
+import  HomeCard  from '../components/HomeCard'
 
 const Home: NextPage = () => {
   const [auth, setAuth] = useState(false)
@@ -20,7 +20,6 @@ const Home: NextPage = () => {
   const [parentMeal, setParentMeal] = useState({} as Meal)
   const [modal, setModal] = useState(false)
   const [modalContent, setModalContent] = useState(<div>Loading Modal...</div>)
-  const [showHistory, setShowHistory] = useState(false)
 
   return (
     <>
@@ -36,14 +35,8 @@ const Home: NextPage = () => {
           <Header setModal={setModal} setModalContent={setModalContent}></Header>
           
           <main className={styles.main}>
-
             <Display auth={auth} meal={parentMeal}></Display>
-              {addingMeal?<AddMeal setAddingMeal={setAddingMeal} setParentMeal={setParentMeal}></AddMeal>: <button onClick={()=>{setAddingMeal(true)}}>Add Meal</button>}
-            <MealChart userMeal={parentMeal}></MealChart>
-
-            <button onClick={()=>setShowHistory(!showHistory)}>Show History</button>
-            {showHistory && <MealHistory></MealHistory>}
-
+            <HomeCard></HomeCard>
           </main>
       </div>
     </>
