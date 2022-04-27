@@ -6,25 +6,8 @@ import styles from '../styles/Home.module.css'
 import { UserContext } from "../utils/authContext"
 
 
-export const MealHistory = () => {
-    const [history,setHistory] = useState({meals:[]})
-    const userContext = useContext(UserContext)
-    const databaseName = "users"
+export const MealHistory = ({history}:{history:{meals:Array<any>}}) => {
 
-    useEffect(()=>{ 
-        const getMeals = async () =>{
-            const user:User|null|undefined = userContext?.currentUser
-            console.log(user)
-            const docRef = user && doc(db,databaseName,user?.uid)
-            const docSnap = docRef && await getDoc(docRef)
-            if(docSnap?.exists()){
-                //@ts-ignore
-                setHistory({meals:docSnap.data().meals})
-            }else{console.error('Could not access document')}
-        }
-        getMeals()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[userContext])
 
     return(
         <div className={styles.mealHistoryContainer}>

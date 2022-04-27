@@ -114,6 +114,29 @@
 .homeCardAddMeal{
   margin:auto;
 }
+.homeCardEntries{
+  height:500px;
+  background:var(--green-lightest);
+  color:var(--green-darkest);
+  display:flex;
+
+}
+.homeCardEntries>div{
+  width:50%;
+}
+.history{
+  display:flex;
+  flex-direction:column;
+  font-size:1rem;
+}
+.history > div{
+  display:flex;
+  gap:20px;
+  padding:5px;
+}
+
+
+
 /*//////////////////////////////////*/
 
 .modalContainer{

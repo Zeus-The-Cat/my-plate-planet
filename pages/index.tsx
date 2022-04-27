@@ -13,6 +13,7 @@ import Login from '../components/Login'
 import { Modal } from '../components/Modal'
 import { MealHistory } from '../components/MealHistory'
 import  HomeCard  from '../components/HomeCard'
+import { ConsumptionStats } from '../models/ConsumptionStats'
 
 const Home: NextPage = () => {
   const [auth, setAuth] = useState(false)
@@ -20,7 +21,8 @@ const Home: NextPage = () => {
   const [parentMeal, setParentMeal] = useState({} as Meal)
   const [modal, setModal] = useState(false)
   const [modalContent, setModalContent] = useState(<div>Loading Modal...</div>)
-
+  const [stats, setStats] = useState({} as ConsumptionStats)
+  
   return (
     <>
       {modal && <Modal modal={modal} setModal={setModal}>{modalContent}</Modal>}

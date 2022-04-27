@@ -6,7 +6,7 @@ import { UserContext } from "../utils/authContext"
 import { useContext } from 'react'
 
 export const Header = ({setModal,setModalContent}:{setModal:any,setModalContent:any}) => {
-    const userContext:Auth|null = useContext(UserContext)
+    const userContext = useContext(UserContext)
 
     const logIn = () => {
         setModalContent(<Login setModal={setModal} setModalContent={setModalContent}></Login>)
@@ -16,7 +16,7 @@ export const Header = ({setModal,setModalContent}:{setModal:any,setModalContent:
         // Check Auth state to allow user to login
         const logOut = () => {
             // Logs user out using Auth0
-            userContext?.signOut().then(() => {
+            userContext?.auth.signOut().then(() => {
                 // Sign-out successful.
             }).catch((_error) => {
                 // An error happened.
@@ -27,8 +27,8 @@ export const Header = ({setModal,setModalContent}:{setModal:any,setModalContent:
                 <Image src="/leaf.svg" alt="Profile Picture"
                     width="50" height="50"
                 ></Image>
-                {userContext?.currentUser?<button onClick={logOut}>Log Out</button>:<button onClick={logIn}>Login</button>}
-                {userContext?.currentUser?.displayName}
+                {userContext?.auth.currentUser?<button onClick={logOut}>Log Out</button>:<button onClick={logIn}>Login</button>}
+                {userContext?.auth.currentUser?.displayName}
             </div>
         )
     }

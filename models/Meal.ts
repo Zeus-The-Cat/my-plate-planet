@@ -14,6 +14,6 @@ export interface MealItem{
 }
 export interface Meal{
     items:Map<string,MealItem>,
-    createdOn?: Date,
-    updatedOn?: Date
+    createdOn?: {nanoseconds:number,seconds:number},
+    updatedOn?: {nanoseconds:number,seconds:number}
 }

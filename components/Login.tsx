@@ -1,19 +1,26 @@
 import { getAuth, signInWithCredential, signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { app } from "../utils/firebase";
 import styles from '../styles/Home.module.css'
 import SignUp from "./SignUp";
+import { UserContext } from "../utils/authContext";
 
 const auth = getAuth(app)
 
-const Login = (props:any) => {
+const Login = ({setModal,setModalContent}:{setModal:any,setModalContent:any}) => {
     const [email,setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    
+    const userContext = useContext(UserContext)
+
     const signIn = () => {
-        signInWithEmailAndPassword(auth,email,password)
+        userContext && signInWithEmailAndPassword(userContext.auth,email,password)
             .then((_userCredential) => {
-                props.setModal(false)
+                setModal(false)
+                // To-do:Fire Signed in popup
+                // tell auth to request new user data
+
             })
             .catch((_error)=>{
                 setErrorMessage('Incorrect email or password')
@@ -21,7 +28,7 @@ const Login = (props:any) => {
     }
     const createAccount = () => {
         // changes modals jsx object to SignUp
-        props.setModalContent(<SignUp setModal={props.setModal}></SignUp>)
+        setModalContent(<SignUp setModal={setModal}></SignUp>)
     }
     return(
         <div className={styles.modalContainer}>
@@ -38,7 +45,7 @@ const Login = (props:any) => {
                         onChange={(e)=>{setPassword(e.target.value);setErrorMessage('')}}
                     />
                     <div className={styles.message}>
-                        {errorMessage&&errorMessage}
+                        {errorMessage}
                     </div>
                     <br />
                 </label>

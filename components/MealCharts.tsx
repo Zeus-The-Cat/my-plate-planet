@@ -26,28 +26,8 @@ class MealChart extends PureComponent<
         }
     }
 
-    testMeal:Meal = {
-        meals: new Map([
-            ['id1',{
-                name:'Cheese',type:'Protein',amount:10,unit:'g'
-            }as MealItem],
-            ['id2',{
-                name:'Milk',type:'Milks',amount:10,unit:'Liter'
-            }as MealItem],
-            ['id3',{
-                name:'Cassava',type:'Starch Rich',amount:15,unit:'kcal'
-            }as MealItem],
-            ['id4',{
-                name:'Palm Oil',type:'Oils',amount:5,unit:'Liter'
-            }as MealItem],
-            ['id5',{
-                name:'Berries',type:'Fruits',amount:2,unit:'kg'
-            }as MealItem],
-        ]),
-    }
-
     mealData(res:ConsumptionStats){
-        // for each in testMeal amount * meanEmission... 
+        // calculates total cost for a mealItem using ConsumptionStats
         const cost = (item_:MealItem) => {
             const type = res.classes.find((el:ConsumptionByClass)=>{
                 return el.name == item_.type
@@ -58,9 +38,9 @@ class MealChart extends PureComponent<
             return {
                 emissions:Math.round(item_.amount * Number(targetItem?.meanEmissions)),
                 landUse:Math.round(item_.amount * Number(targetItem?.meanLandUse)),
-                waterUse:Math.round(item_.amount * Number(targetItem?.meanWater))}
+                waterUse:Math.round(item_.amount * Number(targetItem?.meanWater))
+            }
         }
-
         let items:Array<MealCost> = []
         if(this?.props?.userMeal?.meals){
             for (let item of this.props.userMeal.meals.values()){
@@ -90,15 +70,12 @@ class MealChart extends PureComponent<
                 data:this.mealData(this.state.results)})
         }
     }
-    
+    // 
     renderLine(){
-        //@ts-ignore
         if(this.state.active == "emissions"){
             return <Bar type="monotone" dataKey="emissions" fill="#8884d8" strokeWidth={2} />
-        //@ts-ignore
         }else if(this.state.active == "landUse"){
             return <Bar type="monotone" dataKey="landUse" fill="#d88484" strokeWidth={2} />
-        //@ts-ignore
         }else if(this.state.active == "waterUse"){
             return <Bar type="monotone" dataKey="waterUse" fill="#3f23b1" strokeWidth={2} />
         }
@@ -119,7 +96,7 @@ class MealChart extends PureComponent<
                     </select>
                 </label>
              </form>
-            <div style={{height:'20vw',width:'30vw'}}>
+            <div style={{height:'100%',width:'100%'}}>
                 <ResponsiveContainer width="100%" height="100%">
                     {/* @ts-ignore */}
                     <BarChart width={300} height={100} data={this.state.data}>
