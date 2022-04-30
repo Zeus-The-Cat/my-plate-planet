@@ -9,14 +9,15 @@ import { User } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "../utils/firebase"
 import Entries from "./Entries"
+import { AddMeal } from "./AddMeal"
 
-const LoggedIn = ({history}:{history:{meals:Array<Meal>}}) => {
-
+const LoggedIn = ({history,setHistory}:{history:{meals:Array<Meal>},setHistory:any}) => {
+    // date ranges to display in history
     const [dateA,setDateA] = useState("")
     const [dateB,setDateB] = useState("")
-    useEffect(()=>{
-        console.log(history)
-    },[history])
+    // state for AddMeal component
+    const [addingMeal, setAddingMeal] = useState(false)
+
     const Range = () => {
         return(
             <div className={styles.flexCentered}>
@@ -41,23 +42,47 @@ const LoggedIn = ({history}:{history:{meals:Array<Meal>}}) => {
     const Heading = () => {
         return(
             <div className={styles.HomeCardHeader}>
-                <div>History</div> <Range></Range> <div className={styles.homeCardAddMeal}>Add Meal</div>
+                <div>History</div> 
+                <Range></Range> 
+                <button className={styles.homeCardAddMeal}
+                    onClick={(_e)=>setAddingMeal(true)}>
+                    Add Meal
+                </button>
             </div>
         )
     }
     return(<>
         <Heading></Heading>
-        <Entries history={history}></Entries>
+        <Entries history={history} setHistory={setHistory} addingMeal={addingMeal} setAddingMeal={setAddingMeal}></Entries>
     </>)
 }
 
 const LoggedOut = (props:any) => {
-    return(<>
-    Logged Out
-    </>)
+    // Meals added in current session
+    const [addingMeal2, setAddingMeal2] = useState(false)
+
+
+    const Heading = () => {
+        return (
+        <div className={styles.HomeCardHeader}>
+            <div>History</div> 
+            <button className={styles.homeCardAddMeal}
+                onClick={(_e)=>setAddingMeal2(true)}>
+                Add Meal
+            </button>
+        </div>
+        )
+    }
+
+    return(
+        <div className={styles.flexColumn} style={{background:'var(--green-lightest)',borderRadius:15}}>
+            <Heading></Heading>
+            <Entries history={props.history} setHistory={props.setHistory} addingMeal={addingMeal2} setAddingMeal={setAddingMeal2}></Entries>
+        </div>
+    )
 }
 
-const HomeCard = (props:any) => {
+const HomeCard = () => {
     // array of user meal history
     const [history,setHistory] = useState({meals:[] as Array<Meal>})
     const databaseName = "users"
@@ -69,18 +94,18 @@ const HomeCard = (props:any) => {
             const user:User|null|undefined = userContext?.auth.currentUser
             const docRef = user && doc(db,databaseName,user?.uid)
             const docSnap = docRef && await getDoc(docRef)
-            console.log('getMeals')
             if(docSnap?.exists()){
                 setHistory({meals:[...docSnap.data().meals]})
-            }else{console.error('Could not access document')}
+            }else{
+                setHistory({meals:[]})
+            }
         }
         getMeals()
     },[userContext,setHistory])
 
     return(
         <div className={styles.HomeCard}>
-         {/* {userContext?.currentUser ? <LoggedIn></LoggedIn> : <LoggedOut></LoggedOut>} */}
-            <LoggedIn history={history} ></LoggedIn>
+            {userContext?.auth.currentUser ? <LoggedIn history={history} setHistory={setHistory}></LoggedIn> : <LoggedOut history={history} setHistory={setHistory}></LoggedOut>}
         </div>
     )
 }

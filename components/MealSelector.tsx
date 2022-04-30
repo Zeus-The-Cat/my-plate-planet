@@ -54,7 +54,7 @@ export const MealSelector = (
     // Options dropdown menu
     const optionGroups = (jsonObj:any) =>{
         if(jsonObj){
-            return jsonObj?.map((value:any,i:number)=>{
+            return Array.from(jsonObj).map((value:any,i:number)=>{
                     let options = value.names
                     return(
                         <optgroup label={value.type} key={i+value.type}>

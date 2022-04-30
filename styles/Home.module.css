@@ -8,7 +8,11 @@
   justify-content: center;
   align-items: center;
 }
-
+.flex{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 .flexColumn{
   display:flex;
   flex-direction:column;
@@ -100,6 +104,7 @@
 }
 .HomeCardHeader{
   display:flex;
+  justify-content:space-between;
   align-items:center;
   min-height:80px;
   background:var(--green-darkest);
@@ -112,7 +117,17 @@
 }
 
 .homeCardAddMeal{
-  margin:auto;
+  border:1px solid white;
+  border-radius:15px;
+  background:inherit;
+  color:white;
+  padding:10px;
+  margin:10px;
+  font-size:inherit;
+}
+.homeCardAddMeal:hover{
+  color:var(--green-light);
+  cursor:pointer;
 }
 .homeCardEntries{
   height:500px;
@@ -234,7 +249,6 @@
 
 
 .addMealCard{
-  border: 2px solid blue;
   border-radius:15px;
   padding:20px;
   display:flex;

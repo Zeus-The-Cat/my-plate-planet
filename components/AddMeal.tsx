@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {v4 as uuidv4} from 'uuid'
 import { doc, updateDoc, Timestamp, arrayUnion,collection } from 'firebase/firestore'
 import { getAuth, User } from 'firebase/auth'
@@ -12,12 +12,14 @@ import { MealVisuals } from './MealVisuals'
 import { Meal, MealItem } from '../models/Meal'
 
 import styles from '../styles/Home.module.css'
+import { UserContext } from '../utils/authContext'
 //@ts-ignore
-export const AddMeal = (props:any) => {
+export const AddMeal = ({history,setHistory,setAddingMeal}:{history:any,setHistory:any,setAddingMeal:any}) => {
     const [meal, setMeal] = useState({} as Meal)
     const [foodItems, setFoodItems] = useState({})
     const [rows,setRows] = useState(new Map())
-    const auth = getAuth(app)
+    
+    const userContext = useContext(UserContext)
 
     useEffect( () => {
         const handler = async () =>{
@@ -30,7 +32,6 @@ export const AddMeal = (props:any) => {
     useEffect( ()=> {
         const composeMeal = () => {
             setMeal({items:rows})
-            props.setParentMeal({items:rows})
         }
         composeMeal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,6 +47,7 @@ export const AddMeal = (props:any) => {
         // Generate a key using UUID'
         setRows(new Map(rows.set(uuidv4(),defaultMeal)))
     }
+    
     const removeRow = (e: any) => {
         if(rows.delete(e.target.value)){
             setRows(new Map(rows))
@@ -53,7 +55,7 @@ export const AddMeal = (props:any) => {
     }
 
     const submitMeal= (e:any) => {
-        // append /users/{auth.uid}/meals 
+        // append /users/{auth.uid}/meals or local history
         const updateMeal = async () => {
             let items:Array<Array<string|MealItem>> = []
             for(const item of rows.entries()){
@@ -61,22 +63,33 @@ export const AddMeal = (props:any) => {
                 //@ts-ignore
                 items.push({uid:item[0],...item[1]})
             }
-            const user:User|null = auth.currentUser;
-            const userRef = user?.uid ? doc(db,'users',user.uid) : null
+
+            const updateLocalHistory = () => {
+                // update history state variable instead of cloud
+                let newHistory = {...history};
+                newHistory.meals.push({...meal, createdOn:Timestamp.fromDate(new Date())})
+                setHistory(newHistory)
+                setAddingMeal(false)
+            }
+            const user:User|null|undefined = userContext?.auth.currentUser;
+            const userRef = user?.uid ? doc(db,'users',user.uid) : updateLocalHistory()
             userRef && await updateDoc(userRef,{
                 meals:arrayUnion({
                     createdOn:Timestamp.fromDate(new Date()),
                     items:items
                 })
             }).then(()=>{
-                props.setAddingMeal(false)
+                updateLocalHistory();
             })
         }
+
         updateMeal();
     }
+
     const cancelMeal = (e:any) => {
-        props.setAddingMeal(false)
+        setAddingMeal(false)
     }
+
     return(
         <div className={styles.addMealCard}>
             <div style={{display:'flex',justifyContent:'spaceBetween',alignItems:'center'}}>

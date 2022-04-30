@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
-import { Meal } from "../models/Meal"
-import MealItem from "../models/MealItem"
+import { Meal, MealItem } from "../models/Meal"
 import { ConsumptionStats } from "../models/ConsumptionStats"
 import { getDataset } from "../utils/dataset"
 import styles from '../styles/Home.module.css'
@@ -53,7 +52,7 @@ export const MealVisuals = (props:any) => {
         <div className={styles.addMealVisuals}>
             <div>Emissions {emissions.toFixed(2)} kg CO2</div>
             <div>Land Use  {landUse.toFixed(2)} m^2 year</div>
-            <div>Water Use {waterUse.toFixed(2)} kL eq {nan?"*":null}</div>
+            <div>Water Use {waterUse.toFixed(2)} L {nan?"*":null}</div>
         </div>
     )
 }

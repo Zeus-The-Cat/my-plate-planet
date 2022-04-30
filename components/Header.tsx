@@ -1,11 +1,12 @@
-import { Auth, getAuth, signOut } from 'firebase/auth'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Login from './Login'
+
 import { UserContext } from "../utils/authContext"
 import { useContext } from 'react'
 
 export const Header = ({setModal,setModalContent}:{setModal:any,setModalContent:any}) => {
+    
     const userContext = useContext(UserContext)
 
     const logIn = () => {
@@ -37,11 +38,7 @@ export const Header = ({setModal,setModalContent}:{setModal:any,setModalContent:
     return (
         <div className={styles.header}>
             <div className={styles.headerLogo}>
-                myPL
-                <span>
-                    <span>ate</span>
-                    <span>anate</span>
-                </span>
+                MyPlate
             </div>
             <section>
                 <UserProfile></UserProfile>

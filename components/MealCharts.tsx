@@ -6,8 +6,9 @@ import { Meal, MealItem,MealCost } from '../models/Meal';
 
 // Need to use class style for ReCharts
 class MealChart extends PureComponent<
-    {userMeal:Meal},
+    {history:{ meals:Array<Meal> }},
     {promise:any,data:any,active:string,results:any}> {
+    
     constructor(props:any){
         super(props)
         const handler = async () =>{ // Calculate meal's contribution
@@ -42,8 +43,10 @@ class MealChart extends PureComponent<
             }
         }
         let items:Array<MealCost> = []
-        if(this?.props?.userMeal?.meals){
-            for (let item of this.props.userMeal.meals.values()){
+        let userMeal = this.props.history?.meals && this.props.history.meals[0]
+
+        if(userMeal?.items){
+            for (let item of userMeal.items.values()){
                 items.push({
                     name:item.name,
                     type:item.type,
@@ -56,6 +59,7 @@ class MealChart extends PureComponent<
 
     // component initialized
     componentDidMount(){
+        
         //@ts-ignore ReadOnly<> ts issue
         this.state.promise.then((result:ConsumptionStats)=>{
             this.setState({
@@ -65,7 +69,7 @@ class MealChart extends PureComponent<
     }
     // on each rerender check if userMeal changed
     componentDidUpdate(prevProps:any){
-        if(prevProps.userMeal != this.props.userMeal){
+        if(prevProps.history != this.props.history){
             this.setState({
                 data:this.mealData(this.state.results)})
         }

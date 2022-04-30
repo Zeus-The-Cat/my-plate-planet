@@ -34,9 +34,9 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
         </form>)
     }
 
-    useEffect(()=>{
-        console.log(meal)
-    },[meal])
+    // useEffect(()=>{
+    //     console.log(meal)
+    // },[meal])
 
     const landUseBreakpoints =     [924,2343,3762,5181,6600]
     const waterUseBreakpoints =    [968,1532,2097,2662,3227]
@@ -74,8 +74,8 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
                 {/* {auth ? <TemporalUse></TemporalUse> : <MealUse></MealUse>} */}
             </div>
             <div className={styles.visualizationTitle}>
-                {auth?"Average Consumption Impact":"Individual Meal Impact"}
-                {auth?<DatePicker></DatePicker>:null}
+                {/* {auth?"Average Consumption Impact":"Individual Meal Impact"} */}
+                {/* {auth?<DatePicker></DatePicker>:null} */}
             </div>
         </div>
     )
