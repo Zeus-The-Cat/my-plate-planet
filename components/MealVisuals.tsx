@@ -1,66 +1,64 @@
 import { useState, useEffect } from "react"
 import { Meal, MealItem } from "../models/Meal"
-import { ConsumptionStats } from "../models/ConsumptionStats"
+import { ConsumptionByClass, ConsumptionByItem, ConsumptionStats } from "../models/ConsumptionStats"
 import { getDataset } from "../utils/dataset"
 import styles from '../styles/Home.module.css'
 
-export const MealVisuals = (props:any) => {
+export const MealVisuals = ({meal}:{meal:Meal}) => {
     const [emissions, setEmissions] = useState(0)
     const [landUse, setLandUse] = useState(0)
     const [waterUse, setWaterUse] = useState(0)
-    const [values, setValues] = useState({} as ConsumptionStats)
+    const [stats, setStats] = useState({} as ConsumptionStats)
     const [nan, _] = useState(false)
 
 
     useEffect( () => {
         const handler = async () =>{ // Calculate meal's contribution
             const res = await getDataset(1)
-            res ? setValues(res) : null;
+            res ? setStats(res) : null;
         }
         handler();
     },[])
 
     useEffect(()=>{
         let eSum = 0, lSum = 0, wSum = 0;
-        props.meal.meals ? props.meal.meals.forEach((item:MealItem)=>{
-            if(values.classes){
-                // Typescript is bad about bracket identifiers 
-                const index = values.classes.findIndex(obj => {
-                    return obj.name == item.type
-                });
-                if(index >= 0){
-                    const ii = values.classes[index].items.findIndex(obj => {
-                        return obj.name == item.name
-                    });
-                    if(ii >= 0){
-                        const itemStat = values.classes[index].items[ii]
-                        eSum += parseFloat(String(itemStat.meanEmissions)) * item.amount
-                        lSum += parseFloat(String(itemStat.meanLandUse)) * item.amount
-                        if(parseFloat(String(itemStat.meanWater))){ 
-                            wSum += parseFloat(String(itemStat.meanWater)) * item.amount;
-                        }
-                    }
-                } 
+        meal?.items ? meal.items.forEach((item:MealItem)=>{
+            const targetClass = stats?.classes?.find((el:ConsumptionByClass)=>{
+                return el.name == item.type
+            })
+            // save n and targeted ConsumptionByItem object
+            let n:number = targetClass?.n ? Number(targetClass.n) : 1;
+            if(targetClass?.unit == "kg"){
+                n=n*1000;
             }
+            let targetItem:ConsumptionByItem|undefined = targetClass?.items?.find((el2:ConsumptionByItem)=>{
+                return el2.name == item.name
+            })
+            if(!targetItem){
+                targetItem = {meanEmissions:0,meanLandUse:0,meanWater:0,name:' ',n:0} as ConsumptionByItem
+            }
+            eSum += (Number(targetItem.meanEmissions)/(n*Number(targetItem.n))*item.amount)
+            lSum += (Number(targetItem.meanLandUse)/(n*Number(targetItem.n))*item.amount)
+            wSum += (Number(targetItem.meanWater)/(n*Number(targetItem.n))*item.amount)
         }) : null;
         setEmissions(eSum);
         setLandUse(lSum);
         setWaterUse(wSum);
-    },[props.meal,values])
+    },[meal,stats])
 
     return(
         <>
             <div className={styles.emissionVisual}>
-                <div>Emissions</div>
-                <div>{emissions.toFixed(2)} kg CO2</div>
+                <div style={{color:"#72bbdd"}}>Emissions</div>
+                <div >{emissions.toFixed(2)} kg CO<sub>2</sub></div>
             </div>
             <div className={styles.emissionVisual}>
-                <div>Land Use</div>
-                <div>{landUse.toFixed(2)} m^2 year</div>
+                <div style={{color:"#587c0c"}}>Land Use</div>
+                <div >{landUse.toFixed(2)} m<sup>2</sup> year</div>
             </div>
             <div className={styles.emissionVisual}>
-                <div>Water Use</div>
-                <div>{waterUse.toFixed(2)} L {nan?"*":null}</div>
+                <div style={{color:"#296c7d"}}>Water Use</div>
+                <div >{waterUse.toFixed(2)} L {nan?"*":null}</div>
             </div>
         </>
     )

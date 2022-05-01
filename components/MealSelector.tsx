@@ -93,7 +93,7 @@ export const MealSelector = (
                 value={amount} step="0.01" pattern="[-+]?[0-9]*[.,]?[0-9]+"
                 onChange={handleAmount} min="0" className={styles.rowInput}
             />
-            &#160;{unit}
+            &#160;{unit=="kg"?"g":unit}
         </label>
     </form>
   )

@@ -21,7 +21,6 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
 
     const handleStart = (e:any) => {
         setStart({...start, value:e.target.value})
-        console.log(start)
     }
     const DatePicker = () => {
         return( 
@@ -34,10 +33,6 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
         </form>)
     }
 
-    // useEffect(()=>{
-    //     console.log(meal)
-    // },[meal])
-
     const landUseBreakpoints =     [924,2343,3762,5181,6600]
     const waterUseBreakpoints =    [968,1532,2097,2662,3227]
     const emissionUseBreakpoints = [3.11,4.92,6.73,8.55,10.36]
@@ -46,7 +41,7 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
         // Users consumption cost over time
         return(
             <div style={{left:'18%',position:'absolute',}}>
-                <Image src="/rendering.png" alt="Profile Picture"
+                <Image src="/Rendering.png" alt="Profile Picture"
                     width="1000" height="196"
                 ></Image>
                 {/* Yearly Avg Use View<br />

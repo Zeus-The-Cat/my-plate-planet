@@ -30,23 +30,31 @@ class MealChart extends PureComponent<
     mealData(res:ConsumptionStats){
         // calculates total cost for a mealItem using ConsumptionStats
         const cost = (item_:MealItem) => {
-            const type = res?.classes?.find((el:ConsumptionByClass)=>{
+            const targetClass = res?.classes?.find((el:ConsumptionByClass)=>{
                 return el.name == item_.type
             })
-            const targetItem = type?.items.find((el2:ConsumptionByItem)=>{
+
+            // save n and targeted ConsumptionByItem object
+            let n:number = targetClass?.n ? Number(targetClass.n) : 1;
+            if(targetClass?.unit == "kg"){
+                n=n*1000;
+            }
+            let targetItem:ConsumptionByItem|undefined = targetClass?.items?.find((el2:ConsumptionByItem)=>{
                 return el2.name == item_.name
             })
+            if(!targetItem){
+                targetItem = {meanEmissions:0,meanLandUse:0,meanWater:0,name:' '} as ConsumptionByItem
+            }
             return {
-                emissions:Math.round(item_.amount * Number(targetItem?.meanEmissions)),
-                landUse:Math.round(item_.amount * Number(targetItem?.meanLandUse)),
-                waterUse:Math.round(item_.amount * Number(targetItem?.meanWater))
+                emissions:+((Number(targetItem.meanEmissions)/(n*Number(targetItem.n))*item_.amount).toFixed(2)),
+                landUse:+((Number(targetItem.meanLandUse)/(n*Number(targetItem.n))*item_.amount).toFixed(2)),
+                waterUse:+((Number(targetItem.meanWater)/(n*Number(targetItem.n))*item_.amount).toFixed(2))
             }
         }
         let items:Array<MealCost> = []
         const index = this.props.selected?.reduce((prev,current,currentIndex)=>{
             return current ? currentIndex : prev
         },0)
-        console.log(index);
         const userMeal = this.props.history?.meals && this.props.history.meals[index]
 
         if(userMeal?.items){

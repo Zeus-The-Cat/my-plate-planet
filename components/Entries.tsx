@@ -33,16 +33,24 @@ const Entries = ({setHistory,history,addingMeal,setAddingMeal}:{history:{meals:A
     const mealData = (meal:Meal) => {
         // calculates total cost for a mealItem using ConsumptionStats
         const cost = (item_:MealItem) => {
-            const type = stats?.classes?.find((el:ConsumptionByClass)=>{
+            const targetClass = stats?.classes?.find((el:ConsumptionByClass)=>{
                 return el.name == item_.type
             })
-            const targetItem = type?.items?.find((el2:ConsumptionByItem)=>{
+            // save n and targeted ConsumptionByItem object
+            let n:number = targetClass?.n ? Number(targetClass.n) : 1;
+            if(targetClass?.unit == "kg"){
+                n=n*1000;
+            }
+            let targetItem:ConsumptionByItem|undefined = targetClass?.items?.find((el2:ConsumptionByItem)=>{
                 return el2.name == item_.name
             })
+            if(!targetItem){
+                targetItem = {meanEmissions:0,meanLandUse:0,meanWater:0,name:' ',n:0} as ConsumptionByItem
+            }
             return {
-                emissions:Math.round(item_.amount * Number(targetItem?.meanEmissions)),
-                landUse:Math.round(item_.amount * Number(targetItem?.meanLandUse)),
-                waterUse:Math.round(item_.amount * Number(targetItem?.meanWater))
+                emissions:Math.round(Number(targetItem.meanEmissions)/(n*Number(targetItem.n))*item_.amount),
+                landUse:Math.round((Number(targetItem.meanLandUse)/(n*Number(targetItem.n)))*item_.amount),
+                waterUse:Math.round((Number(targetItem.meanWater)/(n*Number(targetItem.n)))*item_.amount)
             }
         }
         let items:Array<MealCost> = []
