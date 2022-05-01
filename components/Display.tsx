@@ -45,12 +45,15 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
     const TemporalUse = () => {
         // Users consumption cost over time
         return(
-            <>
-                Yearly Avg Use View<br />
+            <div style={{left:'18%',position:'absolute',}}>
+                <Image src="/rendering.png" alt="Profile Picture"
+                    width="1000" height="196"
+                ></Image>
+                {/* Yearly Avg Use View<br />
                 Land {landUseBreakpoints.join(' ')} <br />
                 Water {waterUseBreakpoints.join(' ')} <br />
-                Emission {emissionUseBreakpoints.join(' ')} <br />
-            </>)
+                Emission {emissionUseBreakpoints.join(' ')} <br /> */}
+            </div>)
     }
     const MealUse = () => {
         // Current Meal 

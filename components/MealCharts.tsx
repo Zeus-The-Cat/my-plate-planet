@@ -6,7 +6,7 @@ import { Meal, MealItem,MealCost } from '../models/Meal';
 
 // Need to use class style for ReCharts
 class MealChart extends PureComponent<
-    {history:{ meals:Array<Meal> }},
+    {history:{ meals:Array<Meal> },selected:Array<boolean>},
     {promise:any,data:any,active:string,results:any}> {
     
     constructor(props:any){
@@ -43,7 +43,11 @@ class MealChart extends PureComponent<
             }
         }
         let items:Array<MealCost> = []
-        let userMeal = this.props.history?.meals && this.props.history.meals[0]
+        const index = this.props.selected?.reduce((prev,current,currentIndex)=>{
+            return current ? currentIndex : prev
+        },0)
+        console.log(index);
+        const userMeal = this.props.history?.meals && this.props.history.meals[index]
 
         if(userMeal?.items){
             for (let item of userMeal.items.values()){
@@ -59,7 +63,6 @@ class MealChart extends PureComponent<
 
     // component initialized
     componentDidMount(){
-        
         //@ts-ignore ReadOnly<> ts issue
         this.state.promise.then((result:ConsumptionStats)=>{
             this.setState({
@@ -69,19 +72,19 @@ class MealChart extends PureComponent<
     }
     // on each rerender check if userMeal changed
     componentDidUpdate(prevProps:any){
-        if(prevProps.history != this.props.history){
+        if(prevProps.history != this.props.history || prevProps.selected != this.props.selected){
             this.setState({
                 data:this.mealData(this.state.results)})
         }
     }
-    // 
+
     renderLine(){
         if(this.state.active == "emissions"){
-            return <Bar type="monotone" dataKey="emissions" fill="#8884d8" strokeWidth={2} />
+            return <Bar type="monotone" dataKey="emissions" fill="#72bbdd" strokeWidth={2} />
         }else if(this.state.active == "landUse"){
-            return <Bar type="monotone" dataKey="landUse" fill="#d88484" strokeWidth={2} />
+            return <Bar type="monotone" dataKey="landUse" fill="#587c0c" strokeWidth={2} />
         }else if(this.state.active == "waterUse"){
-            return <Bar type="monotone" dataKey="waterUse" fill="#3f23b1" strokeWidth={2} />
+            return <Bar type="monotone" dataKey="waterUse" fill="#296c7d" strokeWidth={2} />
         }
     }
 

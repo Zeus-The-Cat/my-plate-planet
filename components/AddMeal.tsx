@@ -14,7 +14,7 @@ import { Meal, MealItem } from '../models/Meal'
 import styles from '../styles/Home.module.css'
 import { UserContext } from '../utils/authContext'
 //@ts-ignore
-export const AddMeal = ({history,setHistory,setAddingMeal}:{history:any,setHistory:any,setAddingMeal:any}) => {
+export const AddMeal = ({history,setHistory,setAddingMeal,setSessionMeal}:{history:any,setHistory:any,setAddingMeal:any,setSessionMeal:any}) => {
     const [meal, setMeal] = useState({} as Meal)
     const [foodItems, setFoodItems] = useState({})
     const [rows,setRows] = useState(new Map())
@@ -32,6 +32,7 @@ export const AddMeal = ({history,setHistory,setAddingMeal}:{history:any,setHisto
     useEffect( ()=> {
         const composeMeal = () => {
             setMeal({items:rows})
+            setSessionMeal({items:rows})
         }
         composeMeal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,27 +92,33 @@ export const AddMeal = ({history,setHistory,setAddingMeal}:{history:any,setHisto
     }
 
     return(
-        <div className={styles.addMealCard}>
-            <div style={{display:'flex',justifyContent:'spaceBetween',alignItems:'center'}}>
-                <button onClick={cancelMeal}>Cancel</button>
+        <>
+            <div className={styles.addMealHeader}>
                 <MealVisuals meal={meal}></MealVisuals>
-                <button onClick={submitMeal}>Submit</button>
             </div>
-            {
-                [...rows.keys()].map((key,_)=>{
-                    return (
-                    <span key={key} style={{display:'flex'}}>
-                        <button value={key} onClick={removeRow}>-</button>
-                        <MealSelector 
-                            items={foodItems} 
-                            rows={rows}
-                            setRows={setRows} 
-                            ukey={key}></MealSelector>
-                    </span>
-                )})
-            }
-            <button onClick={addRow}>Add Item</button>
-         </div>
+            <div className={styles.addMealCard}>
+                <button onClick={addRow} className={styles.mainButton}>Add Ingredient</button>
+                <div className={styles.mealItemsContainer}>
+                    {
+                        [...rows.keys()].map((key,_)=>{
+                            return (
+                            <span key={key} className={styles.flex}>
+                                <button value={key} onClick={removeRow} className={styles.removeRow}>-</button>
+                                <MealSelector 
+                                    items={foodItems} 
+                                    rows={rows}
+                                    setRows={setRows} 
+                                    ukey={key}></MealSelector>
+                            </span>
+                        )})
+                    }
+                </div>
+                <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
+                    <button onClick={submitMeal} className={styles.mainButton}>Submit</button>
+                    <button onClick={cancelMeal} className={styles.cancelMeal}>Cancel</button>
+                </div>
+            </div>
+         </>
     )
 }
 

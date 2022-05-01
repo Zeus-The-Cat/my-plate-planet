@@ -22,17 +22,15 @@ const LoggedIn = ({history,setHistory}:{history:{meals:Array<Meal>},setHistory:a
         return(
             <div className={styles.flexCentered}>
                 <div>Range</div>
-                <div className={styles.flexColumn} 
+                <div className={styles.range} 
                 style={{alignItems:'center'}}>
-                    <div className={styles.flexCentered}>
-                        From:
+                    <div>
+                        <div>From:</div>
                         <Calendar dateState={{date:dateA,setDate:setDateA}}></Calendar>
-                        {dateA}
                     </div>
-                    <div className={styles.flexCentered}>
-                        To:
+                    <div>
+                        <div>To:</div>
                         <Calendar dateState={{date:dateB,setDate:setDateB}}></Calendar>
-                        {dateB}
                     </div>
                 </div>
             </div>

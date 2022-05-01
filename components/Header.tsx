@@ -26,7 +26,7 @@ export const Header = ({setModal,setModalContent}:{setModal:any,setModalContent:
         return(
             <div className={styles.profileButton}>
                 <Image src="/leaf.svg" alt="Profile Picture"
-                    width="50" height="50"
+                    width="50" height="50" color="green"
                 ></Image>
                 {userContext?.auth.currentUser?<button onClick={logOut}>Log Out</button>:<button onClick={logIn}>Login</button>}
                 {userContext?.auth.currentUser?.displayName}

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect,useRef } from "react"
 import { MealItem } from "../models/Meal"
+import styles from '../styles/Home.module.css'
 
 // pass setFoodItem through props to receive
 export const MealSelector = (
@@ -46,7 +47,6 @@ export const MealSelector = (
                 setUnit(each.unit)
             }
         })
-        setAmount(0)
         //@ts-ignore
         setType(selectRef?.current?.selectedOptions[0]?.parentElement?.label)
     }
@@ -82,8 +82,8 @@ export const MealSelector = (
     }
 
   return (
-    <form>
-        <label htmlFor="food-item">Choose a Food Item&#160;
+    <form style={{fontSize:18}}>
+        <label htmlFor="food-item">Select a food&#160;
             <select value={selected} ref={selectRef}
                 onChange={handleChange}
                 name="food-item" id="food-item">
@@ -91,7 +91,7 @@ export const MealSelector = (
             </select>
             <input type="text" name="food-quantity" inputMode="numeric"
                 value={amount} step="0.01" pattern="[-+]?[0-9]*[.,]?[0-9]+"
-                onChange={handleAmount} min="0"
+                onChange={handleAmount} min="0" className={styles.rowInput}
             />
             &#160;{unit}
         </label>

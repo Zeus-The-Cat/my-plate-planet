@@ -49,10 +49,19 @@ export const MealVisuals = (props:any) => {
     },[props.meal,values])
 
     return(
-        <div className={styles.addMealVisuals}>
-            <div>Emissions {emissions.toFixed(2)} kg CO2</div>
-            <div>Land Use  {landUse.toFixed(2)} m^2 year</div>
-            <div>Water Use {waterUse.toFixed(2)} L {nan?"*":null}</div>
-        </div>
+        <>
+            <div className={styles.emissionVisual}>
+                <div>Emissions</div>
+                <div>{emissions.toFixed(2)} kg CO2</div>
+            </div>
+            <div className={styles.emissionVisual}>
+                <div>Land Use</div>
+                <div>{landUse.toFixed(2)} m^2 year</div>
+            </div>
+            <div className={styles.emissionVisual}>
+                <div>Water Use</div>
+                <div>{waterUse.toFixed(2)} L {nan?"*":null}</div>
+            </div>
+        </>
     )
 }
