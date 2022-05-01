@@ -41,7 +41,7 @@ const LoggedIn = ({history,setHistory}:{history:{meals:Array<Meal>},setHistory:a
         return(
             <div className={styles.HomeCardHeader}>
                 <div>History</div> 
-                <Range></Range> 
+                {/* <Range></Range>  */}
                 <button className={styles.homeCardAddMeal}
                     onClick={(_e)=>setAddingMeal(true)}>
                     Add Meal
