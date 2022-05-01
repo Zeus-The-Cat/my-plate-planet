@@ -30,7 +30,7 @@ class MealChart extends PureComponent<
     mealData(res:ConsumptionStats){
         // calculates total cost for a mealItem using ConsumptionStats
         const cost = (item_:MealItem) => {
-            const type = res.classes.find((el:ConsumptionByClass)=>{
+            const type = res?.classes?.find((el:ConsumptionByClass)=>{
                 return el.name == item_.type
             })
             const targetItem = type?.items.find((el2:ConsumptionByItem)=>{
