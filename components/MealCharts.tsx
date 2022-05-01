@@ -3,6 +3,7 @@ import { BarChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 import { getDataset } from '../utils/dataset';
 import {ConsumptionByItem, ConsumptionByClass, ConsumptionStats} from '../models/ConsumptionStats'
 import { Meal, MealItem,MealCost } from '../models/Meal';
+import styles from '../styles/Home.module.css'
 
 // Need to use class style for ReCharts
 class MealChart extends PureComponent<
@@ -99,7 +100,7 @@ class MealChart extends PureComponent<
   render() {
     return (
         <>
-            <form>
+            <form className={styles.flex} style={{marginTop:10}}>
                 <label htmlFor="metric">
                     <select name="food-item" id="food-item"
                         onChange={(e)=>{
@@ -111,7 +112,7 @@ class MealChart extends PureComponent<
                     </select>
                 </label>
              </form>
-            <div style={{height:'100%',width:'100%'}}>
+            <div className={styles.mealChart}>
                 <ResponsiveContainer width="100%" height="100%">
                     {/* @ts-ignore */}
                     <BarChart width={300} height={100} data={this.state.data}>

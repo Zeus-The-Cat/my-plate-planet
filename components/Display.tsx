@@ -40,15 +40,11 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
     const TemporalUse = () => {
         // Users consumption cost over time
         return(
-            <div style={{left:'18%',position:'absolute',}}>
                 <Image src="/Rendering.png" alt="Profile Picture"
-                    width="1000" height="196"
-                ></Image>
-                {/* Yearly Avg Use View<br />
-                Land {landUseBreakpoints.join(' ')} <br />
-                Water {waterUseBreakpoints.join(' ')} <br />
-                Emission {emissionUseBreakpoints.join(' ')} <br /> */}
-            </div>)
+                    width="1000" height="200" layout="responsive"
+                    sizes="(max-width: 800) 600)"
+                ></Image> 
+        )
     }
     const MealUse = () => {
         // Current Meal 
@@ -66,15 +62,9 @@ export const Display = ({auth,meal}:{auth:boolean,meal:Meal}) => {
             </>)
     }
     return(
-        <div className={styles.display}>
             <div className={styles.visualization}>
                 <TemporalUse></TemporalUse>
                 {/* {auth ? <TemporalUse></TemporalUse> : <MealUse></MealUse>} */}
             </div>
-            <div className={styles.visualizationTitle}>
-                {/* {auth?"Average Consumption Impact":"Individual Meal Impact"} */}
-                {/* {auth?<DatePicker></DatePicker>:null} */}
-            </div>
-        </div>
     )
 }

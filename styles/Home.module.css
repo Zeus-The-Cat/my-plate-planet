@@ -67,9 +67,9 @@
   justify-content:space-between;
   align-items:center;
   height:80px;
+  min-height:80px;
 }
 .headerLogo{
-  display:flex;
   font-size: clamp(32px, 4vw, 42px);
 }
 .headerLogo > span{
@@ -83,12 +83,13 @@
   width:52px;
   color:black;
   padding-top:10px;
+  margin-bottom:10px;
 }
 .profileButton > button{
   background-color:inherit;
   color:inherit;
   border:none;
-  margin-top:10px;
+  margin-top:5px;
 }
 .profileButton > button:hover{
   cursor:pointer;
@@ -131,15 +132,15 @@
   cursor:pointer;
 }
 .homeCardEntries{
-  height:500px;
   background:var(--green-lightest);
   color:var(--green-darkest);
   display:flex;
-
 }
 .homeCardEntries>div{
   width:50%;
 }
+
+
 .history{
   display:flex;
   flex-direction:column;
@@ -231,26 +232,14 @@
 
 
 
-.display{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  width:100vw;
-}
 .visualization{
   background:lightblue;
   width:82vw;
-  border: 2px solid gray;
+  max-width:1000px;
+  max-height:200px;
+  margin-bottom:10px;
   border-radius:var(--br);
-  height:200px;
 }
-.visualizationTitle{
-  font-size: clamp(18px,4vw,21px);
-  padding:2px;
-}
-
-
-
 .addMealCard{
   padding:20px;
   display:flex;
@@ -356,11 +345,37 @@
   margin: 10px;
 }
 
-
-
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
+.mealChart{
+  height:clamp(300px,4vw,500px);
+  width:100%;
+  justify-content:center;
+  align-items:center;
+  font-size:clamp(12px,4vw,16px)
+}
+.secondPanel{
+  margin:14;
+  padding:10;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:#fefefe;
+}
+@media screen and (max-width: 1100px){
+  /*set style for screen size less than ^*/
+  .homeCardEntries{
+    flex-direction:column-reverse;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:30px;
+    padding-bottom:15px;
+  }
+  .homeCardEntries > div{
+    width:95%;
+  }
+  .mealChart{
+    height:300px;
+    width:90%;
   }
 }
+

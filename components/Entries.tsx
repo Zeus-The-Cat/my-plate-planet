@@ -111,7 +111,7 @@ const Entries = ({setHistory,history,addingMeal,setAddingMeal}:{history:{meals:A
                 <div style={{color:"#72bbdd"}}>{getCost(history?.meals[index],"emissions")}</div>
                 <div style={{color:"#587c0c"}}>{getCost(history?.meals[index],"landUse")}</div>
                 <div style={{color:"#296c7d"}}>{getCost(history?.meals[index],"waterUse")}</div>
-                <button onClick={()=>{}} style={{margin:'auto'}}>Edit</button>
+                {/* <button onClick={()=>{}} style={{margin:'auto'}}>Edit</button> */}
             </div>
         )
     }
@@ -125,11 +125,10 @@ const Entries = ({setHistory,history,addingMeal,setAddingMeal}:{history:{meals:A
 
     return(
         <div className={styles.homeCardEntries}>
-
                 {/* Left Portion*/}
                 <div className={styles.history}>
                     {addingMeal ? (
-                        <MealChart history={{meals:[sessionMeal]}} selected={[true]}></MealChart>
+                            <MealChart history={{meals:[sessionMeal]}} selected={[true]}></MealChart>
                         ) : (
                         <> 
                             <CheckBoxHeader></CheckBoxHeader>
@@ -141,10 +140,7 @@ const Entries = ({setHistory,history,addingMeal,setAddingMeal}:{history:{meals:A
                     }
                 </div>
                 {/**Right Portion */}
-                <div className={styles.flexColumn} 
-                    style={{margin:14,padding:10,
-                    background:'#fefefe',alignItems:'center'}}
-                >
+                <div className={styles.secondPanel}>
                     {addingMeal ? <AddMeal history={history} setHistory={setHistory} setAddingMeal={setAddingMeal} setSessionMeal={setSessionMeal}></AddMeal>:<MealChart history={history} selected={selected}></MealChart>}
                 </div>
         </div>

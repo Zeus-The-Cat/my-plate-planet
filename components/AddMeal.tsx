@@ -97,7 +97,11 @@ export const AddMeal = ({history,setHistory,setAddingMeal,setSessionMeal}:{histo
                 <MealVisuals meal={meal}></MealVisuals>
             </div>
             <div className={styles.addMealCard}>
-                <button onClick={addRow} className={styles.mainButton}>Add Ingredient</button>
+                <div className={styles.flexColumn} style={{alignItems:'center',gap:5}}>
+                    <div>Select Food Group and Amount</div>
+                    <button onClick={addRow} className={styles.mainButton}>Add Ingredient</button>
+                </div>
+                
                 <div className={styles.mealItemsContainer}>
                     {
                         [...rows.keys()].map((key,_)=>{
