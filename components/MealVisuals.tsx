@@ -37,9 +37,9 @@ export const MealVisuals = ({meal}:{meal:Meal}) => {
             if(!targetItem){
                 targetItem = {meanEmissions:0,meanLandUse:0,meanWater:0,name:' ',n:0} as ConsumptionByItem
             }
-            eSum += (Number(targetItem.meanEmissions)/(n*Number(targetItem.n))*item.amount)
-            lSum += (Number(targetItem.meanLandUse)/(n*Number(targetItem.n))*item.amount)
-            wSum += (Number(targetItem.meanWater)/(n*Number(targetItem.n))*item.amount)
+            eSum += (Number(targetItem.meanEmissions)/n*item.amount)
+            lSum += (Number(targetItem.meanLandUse)/n*item.amount)
+            wSum += (Number(targetItem.meanWater)/n*item.amount)
         }) : null;
         setEmissions(eSum);
         setLandUse(lSum);

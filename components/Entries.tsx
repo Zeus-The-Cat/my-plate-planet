@@ -48,9 +48,9 @@ const Entries = ({setHistory,history,addingMeal,setAddingMeal}:{history:{meals:A
                 targetItem = {meanEmissions:0,meanLandUse:0,meanWater:0,name:' ',n:0} as ConsumptionByItem
             }
             return {
-                emissions:Math.round(Number(targetItem.meanEmissions)/(n*Number(targetItem.n))*item_.amount),
-                landUse:Math.round((Number(targetItem.meanLandUse)/(n*Number(targetItem.n)))*item_.amount),
-                waterUse:Math.round((Number(targetItem.meanWater)/(n*Number(targetItem.n)))*item_.amount)
+                emissions:Math.round(Number(targetItem.meanEmissions)/n*item_.amount),
+                landUse:Math.round(Number(targetItem.meanLandUse)/n*item_.amount),
+                waterUse:Math.round(Number(targetItem.meanWater)/n*item_.amount)
             }
         }
         let items:Array<MealCost> = []
