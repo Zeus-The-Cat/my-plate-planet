@@ -131,9 +131,11 @@ const Entries = ({
   };
   const CheckBox = ({ index }: { index: number }) => {
     // Access history.meals array for each individual meal
-
-    const dateFormat = (dateSeconds: number) => {
-      const date = dateSeconds && new Date(dateSeconds * 1000);
+    const dateFormat = (dateSeconds: number | undefined) => {
+      const date =
+        dateSeconds &&
+        dateSeconds !== undefined &&
+        new Date(dateSeconds * 1000);
       const darr = String(date)?.split(" ");
       return darr.slice(0, 4).join(" ");
     };
@@ -147,10 +149,7 @@ const Entries = ({
           onChange={() => toggleCheckbox(index)}
         />
         {/*@ts-ignore*/}
-        <div>
-          {history?.meals.length > index &&
-            dateFormat(history?.meals[index]?.createdOn.seconds)}
-        </div>
+        <div>{dateFormat(history?.meals[index]?.createdOn?.seconds)}</div>
         <div style={{ color: "#72bbdd" }}>
           {getCost(history?.meals[index], "emissions")}
         </div>
