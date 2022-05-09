@@ -1,7 +1,6 @@
+const SVGDisplay = (props: any) => {
+  //
+  return <></>;
+};
 
-const SVGDisplay = (props:any) => {
-    // 
-    return(<></>)
-}
-
-export default SVGDisplay
+export default SVGDisplay;

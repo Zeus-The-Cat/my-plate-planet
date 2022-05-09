@@ -1,4 +1,3 @@
-
 html,
 body {
   padding: 0;
@@ -6,17 +5,17 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 16px;
-  --green: #52796F;
-  --green-light: #84A98C;
-  --green-dark: #354F52;
-  --green-lightest: #CAD2C5;
-  --green-darkest: #2F3E46;
+  --green: #52796f;
+  --green-light: #84a98c;
+  --green-dark: #354f52;
+  --green-lightest: #cad2c5;
+  --green-darkest: #2f3e46;
   --warning: #a01a58;
-  --gray:#7D8597;
-  --gray-light: #979DAC;
-  --gray-dark: #5C677D;
+  --gray: #7d8597;
+  --gray-light: #979dac;
+  --gray-dark: #5c677d;
   --br: 15px;
-  }
+}
 
 a {
   color: inherit;
@@ -35,6 +34,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }

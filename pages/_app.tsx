@@ -1,39 +1,39 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
 
-import { UserContext } from '../utils/authContext'
+import { UserContext } from "../utils/authContext";
 import { getAuth } from "firebase/auth";
-import { app } from '../utils/firebase';
-import { useEffect, useState } from 'react';
+import { app } from "../utils/firebase";
+import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [auth, setAuth] = useState({
-    loggedIn:false,
-    auth:getAuth(app)
-  })
-  useEffect(()=>{
-    auth.auth.onAuthStateChanged((user)=>{
+    loggedIn: false,
+    auth: getAuth(app),
+  });
+  useEffect(() => {
+    auth.auth.onAuthStateChanged((user) => {
       // Trying not to use Observers, only way to update internal state
       //  with Next auth, only way to make it work with react
-      if (user){
+      if (user) {
         // signed in
-        if(!auth.loggedIn){
-            setAuth({loggedIn:true,auth:auth.auth})
+        if (!auth.loggedIn) {
+          setAuth({ loggedIn: true, auth: auth.auth });
         }
-      }else{
+      } else {
         // signed out
-        if(auth.loggedIn){
-            setAuth({loggedIn:false,auth:auth.auth})
+        if (auth.loggedIn) {
+          setAuth({ loggedIn: false, auth: auth.auth });
         }
       }
-    })
-  },[auth,setAuth])
+    });
+  }, [auth, setAuth]);
 
   return (
     <UserContext.Provider value={auth}>
       <Component {...pageProps} />
     </UserContext.Provider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

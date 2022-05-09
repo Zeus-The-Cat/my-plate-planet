@@ -6,50 +6,18 @@
 
 [Nextjs Reference](https://blog.logrocket.com/nextjs-cloud-firestore-full-stack-app-tutorial/)
 
-Use Firestore to Get dataset collection 
+Use Firestore to Get dataset collection
 
 https://github.com/spiermar/d3-flame-graph
 
+# Dev Tools
 
+## [Husky](https://typicode.github.io/husky/#/)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- git hook applying [prettier](https://prettier.io/) and Jest Testing
+- lint-staged: applies linting to each file
 
 ## Deploy on Vercel
+
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

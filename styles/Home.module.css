@@ -8,374 +8,361 @@
   justify-content: center;
   align-items: center;
 }
-.flex{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.flexColumn{
-  display:flex;
-  flex-direction:column;
+.flexColumn {
+  display: flex;
+  flex-direction: column;
 }
-.flexCentered{
-  display:flex;
-  align-items:center;
-  gap:5px;
+.flexCentered {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.modal{
+.modal {
   position: fixed;
   display: block;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 100;
   overflow-x: hidden;
-  background-color: rgba(31, 32, 41, .75);
+  background-color: rgba(31, 32, 41, 0.75);
   opacity: 1;
   transition: opacity 250ms 700ms ease;
 }
-.modalContent{
-  z-index:101;
-  margin:auto;
+.modalContent {
+  z-index: 101;
+  margin: auto;
   transition: opacity 250ms 700ms ease;
 }
-.closeModal{
-  border:2px solid var(--green-darkest);
-  border-radius:50%;
-  padding:5px;
-  width:50px;
-  height:50px;
-  margin:10px;
-  position:absolute;
-  z-index:101;
-  font-size:1.25rem;
-  color:#fff;
-  background:var(--green-dark);
+.closeModal {
+  border: 2px solid var(--green-darkest);
+  border-radius: 50%;
+  padding: 5px;
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  position: absolute;
+  z-index: 101;
+  font-size: 1.25rem;
+  color: #fff;
+  background: var(--green-dark);
 }
-.closeModal:hover{
-  cursor:pointer;
-  background:var(--green);
+.closeModal:hover {
+  cursor: pointer;
+  background: var(--green);
 }
 
-
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  height:80px;
-  min-height:80px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  min-height: 80px;
 }
-.headerLogo{
+.headerLogo {
   font-size: clamp(32px, 4vw, 42px);
 }
-.headerLogo > span{
+.headerLogo > span {
   font-size: clamp(16px, 4vw, 22px);
-  display:flex;
-  flex-direction:column;
-}
-.profileButton{
-  display:flex;
+  display: flex;
   flex-direction: column;
-  width:52px;
-  color:black;
-  padding-top:10px;
-  margin-bottom:10px;
 }
-.profileButton > button{
-  background-color:inherit;
-  color:inherit;
-  border:none;
-  margin-top:5px;
+.profileButton {
+  display: flex;
+  flex-direction: column;
+  width: 52px;
+  color: black;
+  padding-top: 10px;
+  margin-bottom: 10px;
 }
-.profileButton > button:hover{
-  cursor:pointer;
-  color:grey;
+.profileButton > button {
+  background-color: inherit;
+  color: inherit;
+  border: none;
+  margin-top: 5px;
+}
+.profileButton > button:hover {
+  cursor: pointer;
+  color: grey;
 }
 
-
-
-.HomeCard{
-  width:82vw;
-  height:600px;
-  color:white;
-  font-size:clamp(18px,4vw,21px);
+.HomeCard {
+  width: 82vw;
+  height: 600px;
+  color: white;
+  font-size: clamp(18px, 4vw, 21px);
 }
-.HomeCardHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  min-height:80px;
-  background:var(--green-darkest);
+.HomeCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 80px;
+  background: var(--green-darkest);
   border-top-left-radius: var(--br);
   border-top-right-radius: var(--br);
-  border-bottom:4px solid #add8e6;
+  border-bottom: 4px solid #add8e6;
 }
-.HomeCardHeader > div:first-child{
-  margin:20px;
-}
-
-.homeCardAddMeal{
-  border:1px solid white;
-  border-radius:15px;
-  background:inherit;
-  color:white;
-  padding:10px;
-  margin:10px;
-  font-size:inherit;
-}
-.homeCardAddMeal:hover{
-  color:var(--green-light);
-  cursor:pointer;
-}
-.homeCardEntries{
-  background:var(--green-lightest);
-  color:var(--green-darkest);
-  display:flex;
-}
-.homeCardEntries>div{
-  width:50%;
+.HomeCardHeader > div:first-child {
+  margin: 20px;
 }
 
-
-.history{
-  display:flex;
-  flex-direction:column;
-  font-size:1rem;
+.homeCardAddMeal {
+  border: 1px solid white;
+  border-radius: 15px;
+  background: inherit;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  font-size: inherit;
 }
-.history > div{
-  display:flex;
-  gap:20px;
-  padding:5px;
+.homeCardAddMeal:hover {
+  color: var(--green-light);
+  cursor: pointer;
+}
+.homeCardEntries {
+  background: var(--green-lightest);
+  color: var(--green-darkest);
+  display: flex;
+}
+.homeCardEntries > div {
+  width: 50%;
 }
 
-
+.history {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+}
+.history > div {
+  display: flex;
+  gap: 20px;
+  padding: 5px;
+}
 
 /*//////////////////////////////////*/
 
-.modalContainer{
-  background:var(--green-dark);
-  padding:20px;
-  border-radius:20px;
-  font-size:1rem;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  width:300px;
-  border:4px solid var(--green-darkest);
+.modalContainer {
+  background: var(--green-dark);
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  border: 4px solid var(--green-darkest);
 }
-.modalContainer > *{
-  color:white;
+.modalContainer > * {
+  color: white;
 }
-.modalContainer > h3{
-  margin:0px;
-  margin-bottom:10px;
-  font-size:1.5rem;
-  padding-top:5px;
+.modalContainer > h3 {
+  margin: 0px;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  padding-top: 5px;
 }
-.modalContainer > button{
-  background:var(--green);
-  border:none;
+.modalContainer > button {
+  background: var(--green);
+  border: none;
   border-radius: 15px;
-  padding:10px;
-  margin-bottom:10px;
+  padding: 10px;
+  margin-bottom: 10px;
   font-size: 1.15em;
   box-shadow: 2px 4px 44px 0px var(--grey);
 }
-.modalContainer > button:hover{
-  background:var(--green-light);
-  cursor:pointer;
+.modalContainer > button:hover {
+  background: var(--green-light);
+  cursor: pointer;
 }
-.modalContainer .message{
+.modalContainer .message {
   color: red;
-  font-size:1rem;
+  font-size: 1rem;
 }
-.modalContainer > form{
-  width:200px;
-  font-size:1em;
+.modalContainer > form {
+  width: 200px;
+  font-size: 1em;
 }
-.modalContainer > form > label > input{
-  width:100%;
-  font-size:1em;
-}
-
-
-
-.createAccount{
-  font-size:1.1em;
-}
-.createAccount:hover{
-  cursor:pointer;
-  color:var(--green-lightest);
+.modalContainer > form > label > input {
+  width: 100%;
+  font-size: 1em;
 }
 
-
-
-.mealHistoryContainer{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:20px;
-  border-radius:20px;
-  border:4px solid var(--green-darkest);
-  width:80vw;
-  background:var(--green);
-  color:white;
+.createAccount {
+  font-size: 1.1em;
 }
-.mealHistoryContainer > div{
-  text-align:center;
-  margin:5px;
+.createAccount:hover {
+  cursor: pointer;
+  color: var(--green-lightest);
 }
 
-
-
-.visualization{
-  background:lightblue;
-  width:82vw;
-  max-width:1000px;
-  max-height:200px;
-  margin-bottom:10px;
-  border-radius:var(--br);
+.mealHistoryContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 20px;
+  border: 4px solid var(--green-darkest);
+  width: 80vw;
+  background: var(--green);
+  color: white;
 }
-.addMealCard{
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  align-items:center;
-  height:100%;
-}
-.mainButton{
-  border:none;
-  background:var(--green-dark);
-  color:white;
-  font-size: clamp(16px,4vw,20px);
-  border-radius:10px;
-  padding:6px;
-  margin:5px;
-}
-.mainButton:hover{
-  cursor:pointer;
-  color:var(--green-lightest);
-}
-.addMealHeader{
-  background:var(--green-darkest);
-  color:white;
-  width:100%;
-  height:100px;
-  display:flex;
-  justify-content:space-around;
-  gap:15px;
-  padding:15px;
-}
-.addMealVisuals{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  margin:5px;
-}
-.emissionVisual{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  text-align:center;
-}
-.mealItemsContainer{
-  display:flex;
-  flex-direction:column;
-}
-.mealItemsContainer > span{
-  justify-content:flex-start;
-}
-.removeRow{
-  border-radius:50%;
-  align-self:center;
-  font-size:inherit;
-  width:auto;
-  margin-right:5px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border:none;
-  background:inherit;
-  color:var(--gray);
-}
-.removeRow:hover{
-  cursor:pointer;
-  color:red;
-}
-.rowInput{
-  width:50px;
-}
-.cancelMeal{
-  border:none;
-  background:none;
-  font-size:clamp(12px,4vw,14px);
-}
-.cancelMeal:hover{
-  cursor:pointer;
-  color:var(--green-dark);
+.mealHistoryContainer > div {
+  text-align: center;
+  margin: 5px;
 }
 
-.range{
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
+.visualization {
+  background: lightblue;
+  width: 82vw;
+  max-width: 1000px;
+  max-height: 200px;
+  margin-bottom: 10px;
+  border-radius: var(--br);
 }
-.range > div{
-  padding-left:5px;
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:5px;
+.addMealCard {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
 }
-.addUserByEmail{
-  border:1px solid red;
-  padding:15px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  width:400px;
+.mainButton {
+  border: none;
+  background: var(--green-dark);
+  color: white;
+  font-size: clamp(16px, 4vw, 20px);
+  border-radius: 10px;
+  padding: 6px;
+  margin: 5px;
 }
-.addUserByEmail > button{
+.mainButton:hover {
+  cursor: pointer;
+  color: var(--green-lightest);
+}
+.addMealHeader {
+  background: var(--green-darkest);
+  color: white;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  padding: 15px;
+}
+.addMealVisuals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 5px;
+}
+.emissionVisual {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.mealItemsContainer {
+  display: flex;
+  flex-direction: column;
+}
+.mealItemsContainer > span {
+  justify-content: flex-start;
+}
+.removeRow {
+  border-radius: 50%;
+  align-self: center;
+  font-size: inherit;
+  width: auto;
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: inherit;
+  color: var(--gray);
+}
+.removeRow:hover {
+  cursor: pointer;
+  color: red;
+}
+.rowInput {
+  width: 50px;
+}
+.cancelMeal {
+  border: none;
+  background: none;
+  font-size: clamp(12px, 4vw, 14px);
+}
+.cancelMeal:hover {
+  cursor: pointer;
+  color: var(--green-dark);
+}
+
+.range {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.range > div {
+  padding-left: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+.addUserByEmail {
+  border: 1px solid red;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+}
+.addUserByEmail > button {
   margin: 10px;
 }
 
-.mealChart{
-  height:clamp(300px,4vw,500px);
-  width:100%;
-  justify-content:center;
-  align-items:center;
-  font-size:clamp(12px,4vw,16px)
+.mealChart {
+  height: clamp(300px, 4vw, 500px);
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(12px, 4vw, 16px);
 }
-.secondPanel{
-  margin:14;
-  padding:10;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background:#fefefe;
+.secondPanel {
+  margin: 14;
+  padding: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fefefe;
 }
-@media screen and (max-width: 1100px){
+@media screen and (max-width: 1100px) {
   /*set style for screen size less than ^*/
-  .homeCardEntries{
-    flex-direction:column-reverse;
-    justify-content:center;
-    align-items:center;
-    margin-bottom:30px;
-    padding-bottom:15px;
+  .homeCardEntries {
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
   }
-  .homeCardEntries > div{
-    width:95%;
+  .homeCardEntries > div {
+    width: 95%;
   }
-  .mealChart{
-    height:300px;
-    width:90%;
+  .mealChart {
+    height: 300px;
+    width: 90%;
   }
 }
-

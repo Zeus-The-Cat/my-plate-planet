@@ -1,134 +1,187 @@
-import React, { PureComponent,useEffect } from 'react';
-import { BarChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { getDataset } from '../utils/dataset';
-import {ConsumptionByItem, ConsumptionByClass, ConsumptionStats} from '../models/ConsumptionStats'
-import { Meal, MealItem,MealCost } from '../models/Meal';
-import styles from '../styles/Home.module.css'
+import React, { PureComponent, useEffect } from "react";
+import {
+  BarChart,
+  Bar,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { getDataset } from "../utils/dataset";
+import {
+  ConsumptionByItem,
+  ConsumptionByClass,
+  ConsumptionStats,
+} from "../models/ConsumptionStats";
+import { Meal, MealItem, MealCost } from "../models/Meal";
+import styles from "../styles/Home.module.css";
 
 // Need to use class style for ReCharts
 class MealChart extends PureComponent<
-    {history:{ meals:Array<Meal> },selected:Array<boolean>},
-    {promise:any,data:any,active:string,results:any}> {
-    
-    constructor(props:any){
-        super(props)
-        const handler = async () =>{ // Calculate meal's contribution
-            const res = await getDataset(1)
-            if(res){
-                return res
-            }else{
-                return null
-            }  
-        }
-        this.state = {
-            promise:handler(),
-            data:{},
-            active:"emissions",
-            results:{}
-        }
-    }
+  { history: { meals: Array<Meal> }; selected: Array<boolean> },
+  { promise: any; data: any; active: string; results: any }
+> {
+  constructor(props: any) {
+    super(props);
+    const handler = async () => {
+      // Calculate meal's contribution
+      const res = await getDataset(1);
+      if (res) {
+        return res;
+      } else {
+        return null;
+      }
+    };
+    this.state = {
+      promise: handler(),
+      data: {},
+      active: "emissions",
+      results: {},
+    };
+  }
 
-    mealData(res:ConsumptionStats){
-        // calculates total cost for a mealItem using ConsumptionStats
-        const cost = (item_:MealItem) => {
-            const targetClass = res?.classes?.find((el:ConsumptionByClass)=>{
-                return el.name == item_.type
-            })
+  mealData(res: ConsumptionStats) {
+    // calculates total cost for a mealItem using ConsumptionStats
+    const cost = (item_: MealItem) => {
+      const targetClass = res?.classes?.find((el: ConsumptionByClass) => {
+        return el.name == item_.type;
+      });
 
-            // save n and targeted ConsumptionByItem object
-            let n:number = targetClass?.n ? Number(targetClass.n) : 1;
-            if(targetClass?.unit == "kg"){
-                n=n*1000;
-            }
-            let targetItem:ConsumptionByItem|undefined = targetClass?.items?.find((el2:ConsumptionByItem)=>{
-                return el2.name == item_.name
-            })
-            if(!targetItem){
-                targetItem = {meanEmissions:0,meanLandUse:0,meanWater:0,name:' '} as ConsumptionByItem
-            }
-            return {
-                emissions:+((Number(targetItem.meanEmissions)/n*item_.amount).toFixed(2)),
-                landUse:+((Number(targetItem.meanLandUse)/n*item_.amount).toFixed(2)),
-                waterUse:+((Number(targetItem.meanWater)/n*item_.amount).toFixed(2))
-            }
+      // save n and targeted ConsumptionByItem object
+      let n: number = targetClass?.n ? Number(targetClass.n) : 1;
+      if (targetClass?.unit == "kg") {
+        n = n * 1000;
+      }
+      let targetItem: ConsumptionByItem | undefined = targetClass?.items?.find(
+        (el2: ConsumptionByItem) => {
+          return el2.name == item_.name;
         }
-        let items:Array<MealCost> = []
-        const index = this.props.selected?.reduce((prev,current,currentIndex)=>{
-            return current ? currentIndex : prev
-        },0)
-        const userMeal = this.props.history?.meals && this.props.history.meals[index]
+      );
+      if (!targetItem) {
+        targetItem = {
+          meanEmissions: 0,
+          meanLandUse: 0,
+          meanWater: 0,
+          name: " ",
+        } as ConsumptionByItem;
+      }
+      return {
+        emissions: +(
+          (Number(targetItem.meanEmissions) / n) *
+          item_.amount
+        ).toFixed(2),
+        landUse: +((Number(targetItem.meanLandUse) / n) * item_.amount).toFixed(
+          2
+        ),
+        waterUse: +((Number(targetItem.meanWater) / n) * item_.amount).toFixed(
+          2
+        ),
+      };
+    };
+    let items: Array<MealCost> = [];
+    const index = this.props.selected?.reduce((prev, current, currentIndex) => {
+      return current ? currentIndex : prev;
+    }, 0);
+    const userMeal =
+      this.props.history?.meals && this.props.history.meals[index];
 
-        if(userMeal?.items){
-            for (let item of userMeal.items.values()){
-                items.push({
-                    name:item.name,
-                    type:item.type,
-                    ...cost(item)
-                })
-            }
-        }
-       return items
+    if (userMeal?.items) {
+      for (let item of userMeal.items.values()) {
+        items.push({
+          name: item.name,
+          type: item.type,
+          ...cost(item),
+        });
+      }
     }
+    return items;
+  }
 
-    // component initialized
-    componentDidMount(){
-        //@ts-ignore ReadOnly<> ts issue
-        this.state.promise.then((result:ConsumptionStats)=>{
-            this.setState({
-                data:this.mealData(result),
-                results:result})
-        })
+  // component initialized
+  componentDidMount() {
+    //@ts-ignore ReadOnly<> ts issue
+    this.state.promise.then((result: ConsumptionStats) => {
+      this.setState({
+        data: this.mealData(result),
+        results: result,
+      });
+    });
+  }
+  // on each rerender check if userMeal changed
+  componentDidUpdate(prevProps: any) {
+    if (
+      prevProps.history != this.props.history ||
+      prevProps.selected != this.props.selected
+    ) {
+      this.setState({
+        data: this.mealData(this.state.results),
+      });
     }
-    // on each rerender check if userMeal changed
-    componentDidUpdate(prevProps:any){
-        if(prevProps.history != this.props.history || prevProps.selected != this.props.selected){
-            this.setState({
-                data:this.mealData(this.state.results)})
-        }
-    }
+  }
 
-    renderLine(){
-        if(this.state.active == "emissions"){
-            return <Bar type="monotone" dataKey="emissions" fill="#72bbdd" strokeWidth={2} />
-        }else if(this.state.active == "landUse"){
-            return <Bar type="monotone" dataKey="landUse" fill="#587c0c" strokeWidth={2} />
-        }else if(this.state.active == "waterUse"){
-            return <Bar type="monotone" dataKey="waterUse" fill="#296c7d" strokeWidth={2} />
-        }
+  renderLine() {
+    if (this.state.active == "emissions") {
+      return (
+        <Bar
+          type="monotone"
+          dataKey="emissions"
+          fill="#72bbdd"
+          strokeWidth={2}
+        />
+      );
+    } else if (this.state.active == "landUse") {
+      return (
+        <Bar type="monotone" dataKey="landUse" fill="#587c0c" strokeWidth={2} />
+      );
+    } else if (this.state.active == "waterUse") {
+      return (
+        <Bar
+          type="monotone"
+          dataKey="waterUse"
+          fill="#296c7d"
+          strokeWidth={2}
+        />
+      );
     }
+  }
 
   render() {
     return (
-        <>
-            <form className={styles.flex} style={{marginTop:10}}>
-                <label htmlFor="metric">
-                    <select name="food-item" id="food-item"
-                        onChange={(e)=>{
-                            this.setState({active:e.target.value})
-                        }}>
-                        <option value={"emissions"}>Emissions</option>
-                        <option value={"landUse"}>Land Use</option>
-                        <option value={"waterUse"}>Water Use</option>
-                    </select>
-                </label>
-             </form>
-            <div className={styles.mealChart}>
-                <ResponsiveContainer width="100%" height="100%">
-                    {/* @ts-ignore */}
-                    <BarChart width={300} height={100} data={this.state.data}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" scale="band" />
-                        <YAxis type="number" domain={[0,'auto']} />
-                        <Tooltip />
-                        <Legend />
-                        {this.renderLine()}
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
-            
-        </>
+      <>
+        <form className={styles.flex} style={{ marginTop: 10 }}>
+          <label htmlFor="metric">
+            <select
+              name="food-item"
+              id="food-item"
+              onChange={(e) => {
+                this.setState({ active: e.target.value });
+              }}
+            >
+              <option value={"emissions"}>Emissions</option>
+              <option value={"landUse"}>Land Use</option>
+              <option value={"waterUse"}>Water Use</option>
+            </select>
+          </label>
+        </form>
+        <div className={styles.mealChart}>
+          <ResponsiveContainer width="100%" height="100%">
+            {/* @ts-ignore */}
+            <BarChart width={300} height={100} data={this.state.data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" scale="band" />
+              <YAxis type="number" domain={[0, "auto"]} />
+              <Tooltip />
+              <Legend />
+              {this.renderLine()}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </>
     );
   }
 }
 
-export default MealChart
+export default MealChart;
