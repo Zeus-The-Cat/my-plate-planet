@@ -47,7 +47,10 @@ export const AddMeal = ({
 
   useEffect(() => {
     const composeMeal = () => {
-      setMeal({ items: rows });
+      setMeal({
+        items: rows,
+        createdOn: Timestamp.fromDate(new Date()),
+      });
       setSessionMeal({ items: rows });
     };
     composeMeal();
@@ -88,7 +91,6 @@ export const AddMeal = ({
         let newHistory = { ...history };
         newHistory.meals.push({
           ...meal,
-          createdOn: Timestamp.fromDate(new Date()),
         });
         setHistory(newHistory);
         setAddingMeal(false);

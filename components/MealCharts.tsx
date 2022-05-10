@@ -9,6 +9,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from "recharts";
 import { getDataset } from "../utils/dataset";
 import {
@@ -16,13 +18,20 @@ import {
   ConsumptionByClass,
   ConsumptionStats,
 } from "../models/ConsumptionStats";
-import { Meal, MealItem, MealCost } from "../models/Meal";
+import { Meal, MealCost, MealItem, MealItemCost } from "../models/Meal";
 import styles from "../styles/Home.module.css";
 
 // Need to use class style for ReCharts
+// Dynamically switches between individual meal graph <-> day-by-day comparison
 class MealChart extends PureComponent<
   { history: { meals: Array<Meal> }; selected: Array<boolean> },
-  { promise: any; data: any; active: string; results: any }
+  {
+    promise: any;
+    mealCost: Array<MealItemCost>;
+    historyCost: Array<MealCost>;
+    active: string;
+    statistics: ConsumptionStats;
+  }
 > {
   constructor(props: any) {
     super(props);
@@ -37,13 +46,14 @@ class MealChart extends PureComponent<
     };
     this.state = {
       promise: handler(),
-      data: {},
+      mealCost: [] as Array<MealItemCost>,
+      historyCost: [] as Array<MealCost>,
       active: "emissions",
-      results: {},
+      statistics: {} as ConsumptionStats,
     };
   }
 
-  mealData(res: ConsumptionStats) {
+  mealData(res: ConsumptionStats, targetMeal?: number) {
     // calculates total cost for a mealItem using ConsumptionStats
     const cost = (item_: MealItem) => {
       const targetClass = res?.classes?.find((el: ConsumptionByClass) => {
@@ -81,43 +91,122 @@ class MealChart extends PureComponent<
         ),
       };
     };
-    let items: Array<MealCost> = [];
-    const index = this.props.selected?.reduce((prev, current, currentIndex) => {
-      return current ? currentIndex : prev;
-    }, 0);
-    const userMeal =
-      this.props.history?.meals && this.props.history.meals[index];
 
+    if (targetMeal === undefined) {
+      targetMeal = this.props.selected?.reduce(
+        (prev, current, currentIndex) => {
+          return current ? currentIndex : prev;
+        },
+        0
+      );
+    }
+    let userMeal = {} as Meal;
+    if (this.props.history?.meals && this.props.selected[targetMeal]) {
+      userMeal = this.props.history.meals[targetMeal];
+    }
+    let mealCost: Array<MealItemCost> = [];
     if (userMeal?.items) {
       for (let item of userMeal.items.values()) {
-        items.push({
-          name: item.name,
-          type: item.type,
-          ...cost(item),
+        // Need to join duplicates, as two of the same x-value breaks recharts
+        let ind;
+        mealCost?.filter((mic: MealItemCost, i: number) => {
+          ind = mic.name == item.name && i;
+          return mic.name == item.name;
         });
+        console.log(ind);
+        if (ind) {
+          let { emissions, landUse, waterUse } = cost(item);
+          mealCost[ind].emissions += emissions;
+          mealCost[ind].landUse += landUse;
+          mealCost[ind].waterUse += waterUse;
+        } else {
+          mealCost.push({
+            name: item.name,
+            type: item.type,
+            createdOn: userMeal.createdOn,
+            ...cost(item),
+          });
+        }
       }
     }
-    return items;
+    return mealCost;
+  }
+
+  historyData(res: ConsumptionStats) {
+    const dateFormat = (dateSeconds: number | undefined) => {
+      if (dateSeconds == undefined) {
+        return "";
+      }
+      const date =
+        dateSeconds &&
+        dateSeconds !== undefined &&
+        new Date(dateSeconds * 1000);
+      const darr = String(date)?.split(" ");
+      return darr.slice(0, 4).join(" ");
+    };
+    let hd = [] as Array<MealCost>;
+    this.props.selected &&
+      this.props.selected.forEach((checked, index) => {
+        if (checked) {
+          let md = this.mealData(res, index);
+          let e = 0,
+            lu = 0,
+            wu = 0,
+            co = "";
+          md &&
+            md.forEach((mic: MealItemCost) => {
+              if (!co) {
+                co = dateFormat(mic?.createdOn?.seconds);
+              }
+              e += mic.emissions;
+              lu += mic.landUse;
+              wu += mic.waterUse;
+            });
+          // Combine meals of the same day
+          let addedFlag = false;
+          for (let i in hd) {
+            if (hd[i].createdOn == co) {
+              hd[i].emissions += e;
+              hd[i].landUse += lu;
+              hd[i].waterUse += wu;
+              addedFlag = true;
+              break;
+            }
+          }
+
+          !addedFlag &&
+            hd.push({
+              createdOn: co,
+              emissions: e,
+              landUse: lu,
+              waterUse: wu,
+            } as MealCost);
+        }
+      });
+
+    return hd;
   }
 
   // component initialized
   componentDidMount() {
-    //@ts-ignore ReadOnly<> ts issue
+    // set state equal to database response
     this.state.promise.then((result: ConsumptionStats) => {
       this.setState({
-        data: this.mealData(result),
-        results: result,
+        mealCost: this.mealData(result),
+        historyCost: this.historyData(result),
+        statistics: result,
       });
     });
   }
-  // on each rerender check if userMeal changed
+  // On each rerender check if userMeal changed, can't use hooks in class components
   componentDidUpdate(prevProps: any) {
     if (
       prevProps.history != this.props.history ||
       prevProps.selected != this.props.selected
     ) {
       this.setState({
-        data: this.mealData(this.state.results),
+        mealCost: this.mealData(this.state.statistics),
+        historyCost: this.historyData(this.state.statistics),
       });
     }
   }
@@ -148,6 +237,92 @@ class MealChart extends PureComponent<
     }
   }
 
+  mealBarChart() {
+    return (
+      <BarChart width={300} height={100} data={this.state.mealCost}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" scale="band" />
+        <YAxis type="number" domain={[0, "auto"]} />
+        <Tooltip />
+        <Legend />
+        {this.renderLine()}
+      </BarChart>
+    );
+  }
+
+  historyAreaChart() {
+    function renderGradient(active: string) {
+      //@ts-ignore
+      // return(<>
+      //             <Area type="monotone" dataKey="emissions" stroke="#add8e6" dot={true} fillOpacity={0.8} fill="url(#colorEmissions)" />
+      //             <Area type="monotone" dataKey="landUse" stroke="#82ca9d" dot={true} fillOpacity={0.8} fill="url(#colorLand)" />
+      //             <Area type="monotone" dataKey="waterUse" stroke="#8884d8" dot={true} fillOpacity={0.8} fill="url(#colorWater)" />
+      // </>)
+      if (active == "emissions") {
+        return (
+          <Area
+            type="monotone"
+            dataKey="emissions"
+            stroke="#add8e6"
+            dot={true}
+            fillOpacity={1}
+            fill="url(#colorEmissions)"
+          />
+        );
+      } else if (active == "landUse") {
+        return (
+          <Area
+            type="monotone"
+            dataKey="landUse"
+            stroke="#82ca9d"
+            dot={true}
+            fillOpacity={1}
+            fill="url(#colorLand)"
+          />
+        );
+      } else if (active == "waterUse") {
+        return (
+          <Area
+            type="monotone"
+            dataKey="waterUse"
+            stroke="#8884d8"
+            dot={true}
+            fillOpacity={1}
+            fill="url(#colorWater)"
+          />
+        );
+      }
+    }
+
+    return (
+      <AreaChart
+        width={730}
+        height={250}
+        data={this.state.historyCost}
+        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+      >
+        <defs>
+          <linearGradient id="colorWater" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="colorLand" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="colorEmissions" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#add8e6" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#add8e6" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <XAxis dataKey="createdOn" />
+        <YAxis />
+        <CartesianGrid strokeDasharray="3 3" />
+        <Tooltip />
+        {renderGradient(this.state.active)}
+      </AreaChart>
+    );
+  }
   render() {
     return (
       <>
@@ -168,15 +343,9 @@ class MealChart extends PureComponent<
         </form>
         <div className={styles.mealChart}>
           <ResponsiveContainer width="100%" height="100%">
-            {/* @ts-ignore */}
-            <BarChart width={300} height={100} data={this.state.data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" scale="band" />
-              <YAxis type="number" domain={[0, "auto"]} />
-              <Tooltip />
-              <Legend />
-              {this.renderLine()}
-            </BarChart>
+            {this.state.historyCost.length > 1
+              ? this.historyAreaChart()
+              : this.mealBarChart()}
           </ResponsiveContainer>
         </div>
       </>

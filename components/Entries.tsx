@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import MealChart from "./MealCharts";
 
 import styles from "../styles/Home.module.css";
-import { Meal, MealCost, MealItem } from "../models/Meal";
+import { Meal, MealItemCost, MealItem } from "../models/Meal";
 import { AddMeal } from "./AddMeal";
 import { getDataset } from "../utils/dataset";
 import {
@@ -82,7 +82,7 @@ const Entries = ({
         waterUse: Math.round((Number(targetItem.meanWater) / n) * item_.amount),
       };
     };
-    let items: Array<MealCost> = [];
+    let items: Array<MealItemCost> = [];
     let userMeal: Meal = meal;
 
     if (userMeal?.items) {
@@ -90,6 +90,7 @@ const Entries = ({
         items.push({
           name: item.name,
           type: item.type,
+          createdOn: userMeal.createdOn,
           ...cost(item),
         });
       }
@@ -114,18 +115,19 @@ const Entries = ({
         );
     };
     return (
-      <div style={{ paddingTop: 10 }}>
+      <div style={{ paddingTop: 1 }}>
         <input
           type="checkbox"
           id="selectAll"
           name="selectall"
           checked={selectAll}
           onChange={toggleAll}
+          style={{ paddingLeft: 10 }}
         />
-        <div>Date</div>
-        <div>Emissions</div>
-        <div>Land Use</div>
-        <div>Water Use</div>
+        <div style={{ width: 115 }}>Date</div>
+        <div style={{ width: 80 }}>Emissions</div>
+        <div style={{ width: 80 }}>Land Use</div>
+        <div style={{ width: 80 }}>Water Use</div>
       </div>
     );
   };
@@ -148,18 +150,23 @@ const Entries = ({
           checked={selected[index]}
           onChange={() => toggleCheckbox(index)}
         />
-        {/*@ts-ignore*/}
-        <div>{dateFormat(history?.meals[index]?.createdOn?.seconds)}</div>
-        <div style={{ color: "#72bbdd" }}>
+        <div style={{ width: 115 }}>
+          {dateFormat(history?.meals[index]?.createdOn?.seconds)}
+        </div>
+        <div style={{ color: "#72bbdd", width: 80 }}>
           {getCost(history?.meals[index], "emissions")}
         </div>
-        <div style={{ color: "#587c0c" }}>
+        <div style={{ color: "#587c0c", width: 80 }}>
           {getCost(history?.meals[index], "landUse")}
         </div>
-        <div style={{ color: "#296c7d" }}>
+        <div style={{ color: "#296c7d", width: 80 }}>
           {getCost(history?.meals[index], "waterUse")}
         </div>
-        {/* <button onClick={()=>{}} style={{margin:'auto'}}>Edit</button> */}
+        {/* <button 
+          onClick={()=>{
+            console.log('Under Development')
+          }} 
+          className={styles.editButton}>Edit</button> */}
       </div>
     );
   };

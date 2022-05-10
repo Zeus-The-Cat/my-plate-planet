@@ -136,6 +136,16 @@
 .homeCardEntries > div {
   width: 50%;
 }
+.editButton {
+  margin: auto;
+  border: none;
+  background: inherit;
+  color: var(--green-darkest);
+}
+.editButton:hover {
+  cursor: pointer;
+  color: var(--green);
+}
 
 .history {
   display: flex;
