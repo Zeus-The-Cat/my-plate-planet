@@ -232,11 +232,21 @@
 
 .visualization {
   background: lightblue;
+  position: relative;
   width: 82vw;
   max-width: 1000px;
-  max-height: 200px;
+  max-height: 300px;
   margin-bottom: 10px;
   border-radius: var(--br);
+}
+.temporalImageContainer {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  max-height: 300px;
+  max-width: 1000px;
+  top: 0px;
+  left: 0px;
 }
 .addMealCard {
   padding: 20px;

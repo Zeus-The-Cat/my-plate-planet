@@ -1,8 +1,7 @@
-import React, { PureComponent, useEffect } from "react";
+import React, { PureComponent } from "react";
 import {
   BarChart,
   Bar,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -113,7 +112,6 @@ class MealChart extends PureComponent<
           ind = mic.name == item.name && i;
           return mic.name == item.name;
         });
-        console.log(ind);
         if (ind) {
           let { emissions, landUse, waterUse } = cost(item);
           mealCost[ind].emissions += emissions;
@@ -166,9 +164,9 @@ class MealChart extends PureComponent<
           let addedFlag = false;
           for (let i in hd) {
             if (hd[i].createdOn == co) {
-              hd[i].emissions += e;
-              hd[i].landUse += lu;
-              hd[i].waterUse += wu;
+              hd[i].emissions += +e.toFixed(2);
+              hd[i].landUse += +lu.toFixed(2);
+              hd[i].waterUse += +wu.toFixed(2);
               addedFlag = true;
               break;
             }
@@ -177,9 +175,9 @@ class MealChart extends PureComponent<
           !addedFlag &&
             hd.push({
               createdOn: co,
-              emissions: e,
-              landUse: lu,
-              waterUse: wu,
+              emissions: +e.toFixed(2),
+              landUse: +lu.toFixed(2),
+              waterUse: +wu.toFixed(2),
             } as MealCost);
         }
       });
@@ -243,7 +241,7 @@ class MealChart extends PureComponent<
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" scale="band" />
         <YAxis type="number" domain={[0, "auto"]} />
-        <Tooltip />
+        <Tooltip cursor={{ fill: "transparent" }} />
         <Legend />
         {this.renderLine()}
       </BarChart>

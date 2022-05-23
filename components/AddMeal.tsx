@@ -1,14 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import {
-  doc,
-  updateDoc,
-  Timestamp,
-  arrayUnion,
-  collection,
-} from "firebase/firestore";
-import { getAuth, User } from "firebase/auth";
-import { db, app } from "../utils/firebase";
+import { doc, updateDoc, Timestamp, arrayUnion } from "firebase/firestore";
+import { User } from "firebase/auth";
+import { db } from "../utils/firebase";
 
 import { getDataset } from "../utils/dataset";
 import { MealSelector } from "./MealSelector";
